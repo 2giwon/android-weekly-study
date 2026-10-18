@@ -1,0 +1,56 @@
+# 글이나 생성기가 바뀌면 사이트를 다시 굽고 GitHub Pages 에 올린다.
+# 서드파티 액션 없이 GitHub 공식 액션만 쓴다.
+
+name: 사이트 배포
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'posts/**.md'
+      - 'build.mjs'
+      - 'lib/**'
+      - 'vendor/**'
+      - 'test/**'
+      - '.github/workflows/deploy.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # `node --test test/` 는 Node 22에서 디렉터리를 모듈로 해석해 실패한다. 파일을 명시한다.
+      - name: 테스트
+        run: node --test test/*.test.mjs
+
+      - name: 빌드
+        run: node build.mjs
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

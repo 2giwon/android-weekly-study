@@ -1,0 +1,528 @@
+/* 공부 노트 — 푸른 회색 종이에 남색 잉크, Aide 에 쓸 부분만 노란 형광펜. */
+
+:root {
+  --paper: #eef1f4;
+  --sheet: #f8f9fb;
+  --ink: #1b2733;
+  --ink-soft: #4a5866;
+  --rule: #cfd6de;
+  --marker: #f2d54a;
+  --marker-wash: rgba(242, 213, 74, 0.32);
+  --planned: #2f5d8a;
+  --applied: #2e7d6b;
+  --dropped: #8a949e;
+  --code-bg: #e3e8ee;
+
+  --serif: 'Gowun Batang', 'AppleMyungjo', serif;
+  --sans: 'IBM Plex Sans KR', 'Apple SD Gothic Neo', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, monospace;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #141b22;
+    --sheet: #1a232c;
+    --ink: #e4e9ee;
+    --ink-soft: #9fadba;
+    --rule: #2c3844;
+    --marker: #e8c93a;
+    --marker-wash: rgba(232, 201, 58, 0.16);
+    --planned: #7fb0dd;
+    --applied: #6cc4ad;
+    --dropped: #75808b;
+    --code-bg: #222d38;
+    color-scheme: dark;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 400 17px/1.75 var(--sans);
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+a {
+  color: inherit;
+  text-decoration-color: var(--ink-soft);
+  text-underline-offset: 3px;
+}
+
+a:hover {
+  text-decoration-color: currentColor;
+}
+
+:focus-visible {
+  outline: 2px solid var(--planned);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+code {
+  font-family: var(--mono);
+  font-size: 0.86em;
+  background: var(--code-bg);
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+}
+
+/* ── 머리 · 꼬리 ─────────────────────────────── */
+
+.masthead,
+main,
+.colophon {
+  width: min(100% - 32px, 960px);
+  margin-inline: auto;
+}
+
+.masthead {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 28px 0 20px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.brand {
+  font: 700 20px/1.3 var(--serif);
+  text-decoration: none;
+}
+
+.masthead nav {
+  display: flex;
+  gap: 20px;
+  font-size: 15px;
+}
+
+.masthead nav a {
+  text-decoration: none;
+  color: var(--ink-soft);
+  padding-bottom: 2px;
+}
+
+.masthead nav a[aria-current='page'] {
+  color: var(--ink);
+  box-shadow: inset 0 -3px 0 var(--marker);
+}
+
+.colophon {
+  margin-top: 96px;
+  padding: 24px 0 48px;
+  border-top: 1px solid var(--rule);
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+
+.lede {
+  max-width: 38em;
+  color: var(--ink-soft);
+  margin: 32px 0 48px;
+}
+
+.empty {
+  padding: 48px 0;
+  color: var(--ink-soft);
+}
+
+/* ── 상태 칩 · 태그 ──────────────────────────── */
+
+.chip {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1;
+  padding: 5px 9px;
+  border-radius: 999px;
+  border: 1.5px solid currentColor;
+  white-space: nowrap;
+}
+
+.chip-candidate {
+  color: var(--ink);
+  background: var(--marker);
+  border-color: var(--marker);
+}
+@media (prefers-color-scheme: dark) {
+  .chip-candidate {
+    color: #1b2733;
+  }
+}
+.chip-planned {
+  color: var(--planned);
+}
+.chip-applied {
+  color: var(--applied);
+}
+.chip-dropped {
+  color: var(--dropped);
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 0;
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+
+.tags li::before {
+  content: '#';
+  color: var(--rule);
+  margin-right: 1px;
+}
+
+/* ── 글 목록: 이슈 번호가 색인 탭처럼 선다 ────────── */
+
+.issue {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 32px;
+  padding: 40px 0;
+  border-top: 1px solid var(--rule);
+}
+
+.issue-spine {
+  position: sticky;
+  top: 24px;
+  align-self: start;
+}
+
+.issue-spine h2 {
+  margin: 0;
+  font: 700 76px/0.9 var(--serif);
+  letter-spacing: -0.03em;
+}
+
+.issue-spine h2 a {
+  text-decoration: none;
+}
+
+.issue-spine p {
+  margin: 12px 0 0;
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+
+.entries {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.entry + .entry {
+  margin-top: 36px;
+}
+
+.entry-title {
+  font: 700 25px/1.4 var(--serif);
+  text-decoration: none;
+}
+
+.entry-title:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--rule);
+}
+
+.entry-original {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+
+.entry-aide {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  margin: 14px 0 0;
+  font-size: 15px;
+}
+
+/* ── 글 ──────────────────────────────────────── */
+
+.post {
+  max-width: 720px;
+}
+
+.post-head {
+  padding: 48px 0 32px;
+}
+
+.post-issue {
+  display: flex;
+  gap: 12px;
+  margin: 0;
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+
+.post-issue a {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.post h1 {
+  margin: 14px 0 0;
+  font: 700 clamp(30px, 6vw, 42px) / 1.3 var(--serif);
+  letter-spacing: -0.01em;
+}
+
+.post-source {
+  margin: 16px 0 0;
+  color: var(--ink-soft);
+  font-size: 15px;
+}
+
+.aide-card {
+  margin-top: 28px;
+  padding: 16px 18px;
+  background: var(--sheet);
+  border-left: 6px solid var(--marker);
+  border-radius: 0 6px 6px 0;
+}
+
+.aide-card p {
+  margin: 0;
+}
+
+.aide-card p + p {
+  margin-top: 8px;
+}
+
+.prose {
+  border-top: 1px solid var(--rule);
+  padding-top: 16px;
+}
+
+.prose h2 {
+  margin: 56px 0 12px;
+  font: 700 26px/1.4 var(--serif);
+}
+
+.prose h3 {
+  margin: 36px 0 8px;
+  font-size: 19px;
+  font-weight: 600;
+}
+
+.prose p,
+.prose ul,
+.prose ol {
+  margin: 0 0 18px;
+}
+
+.prose li + li {
+  margin-top: 6px;
+}
+
+.prose blockquote {
+  margin: 0 0 18px;
+  padding: 2px 0 2px 16px;
+  border-left: 3px solid var(--rule);
+  color: var(--ink-soft);
+}
+
+.prose blockquote p {
+  margin: 0;
+}
+
+.prose pre {
+  margin: 0 0 18px;
+  padding: 18px 20px;
+  background: var(--code-bg);
+  border-radius: 6px;
+  overflow-x: auto;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.prose pre code {
+  background: none;
+  padding: 0;
+  font-size: inherit;
+}
+
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 0 18px;
+  font-size: 15px;
+  display: block;
+  overflow-x: auto;
+}
+
+.prose th,
+.prose td {
+  text-align: left;
+  vertical-align: top;
+  padding: 10px 14px 10px 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.prose th {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* 형광펜 구역: Aide 에 가져다 쓸 부분 */
+.aide-note {
+  margin: 56px -20px 0;
+  padding: 4px 20px 8px;
+  background: var(--marker-wash);
+  border-radius: 6px;
+}
+
+.aide-note h2 {
+  margin-top: 20px;
+}
+
+.aide-note h2 {
+  text-decoration: underline;
+  text-decoration-color: var(--marker);
+  text-decoration-thickness: 0.22em;
+  text-underline-offset: 0.12em;
+  text-decoration-skip-ink: none;
+}
+
+/* ── Aide 적용 후보 보드 ─────────────────────── */
+
+.aide h1 {
+  margin: 48px 0 0;
+  font: 700 clamp(30px, 6vw, 42px) / 1.3 var(--serif);
+}
+
+.aide .lede {
+  margin-top: 12px;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.lane {
+  border-top: 4px solid var(--rule);
+  padding-top: 12px;
+}
+
+.lane-candidate {
+  border-top-color: var(--marker);
+}
+.lane-planned {
+  border-top-color: var(--planned);
+}
+.lane-applied {
+  border-top-color: var(--applied);
+}
+.lane-dropped {
+  border-top-color: var(--dropped);
+}
+
+.lane h2 {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 0 12px;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.count {
+  color: var(--ink-soft);
+  font-weight: 400;
+}
+
+.lane ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.lane li {
+  padding: 14px;
+  background: var(--sheet);
+  border-radius: 6px;
+  font-size: 15px;
+}
+
+.lane li + li {
+  margin-top: 10px;
+}
+
+.lane li p {
+  margin: 8px 0;
+}
+
+.lane .task,
+.lane .from {
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+.lane-empty {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 15px;
+}
+
+/* ── 좁은 화면 ───────────────────────────────── */
+
+@media (max-width: 760px) {
+  body {
+    font-size: 16px;
+  }
+  .issue {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 32px 0;
+  }
+  .issue-spine {
+    position: static;
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+  }
+  .issue-spine h2 {
+    font-size: 52px;
+  }
+  .issue-spine p {
+    margin: 0;
+  }
+  .entry-title {
+    font-size: 21px;
+  }
+  .entry-aide {
+    flex-direction: column;
+    gap: 6px;
+  }
+  .board {
+    grid-template-columns: 1fr;
+  }
+  .aide-note {
+    margin-inline: -12px;
+    padding-inline: 12px;
+  }
+}
+
+@media (min-width: 761px) and (max-width: 1000px) {
+  .board {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

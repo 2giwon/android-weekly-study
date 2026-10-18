@@ -1,0 +1,3 @@
+# 빌드 산출물 — Actions 가 구워서 Pages 에 올린다
+dist/
+.DS_Store
