@@ -381,6 +381,11 @@ main,
   white-space: nowrap;
 }
 
+/* 좁은 칸에서 코드가 글자 중간에 끊기지 않게 한다 (넘치면 표가 가로로 스크롤된다) */
+.prose td code {
+  white-space: nowrap;
+}
+
 /* 형광펜 구역: Aide 에 가져다 쓸 부분 */
 .aide-note {
   margin: 56px -20px 0;
