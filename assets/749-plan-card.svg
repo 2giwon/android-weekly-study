@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 560" role="img" aria-labelledby="t d">
+  <title id="t">Kryzz AI 에이전트의 계획 카드</title>
+  <desc id="d">사용자가 "저가폰 3개를 비교하고 리뷰를 읽어서 스프레드시트로 만들어 줘"라고 요청하면, 에이전트는 일을 시작하기 전에 4단계 계획을 카드로 보여 준다. 첫 단계 "저가폰 리뷰 검색하기"가 진행 중이고 나머지 세 단계는 아직 하지 않았다. 카드 아래에는 "에이전트 작업 중…" 표시가 있다.</desc>
+  <style>
+    text { font-family: 'IBM Plex Sans KR', 'Apple SD Gothic Neo', system-ui, sans-serif; fill: #1b2733; }
+    .soft { fill: #4a5866; }
+    .dim { fill: #8a949e; }
+    .title { font-weight: 700; }
+    .screen { fill: #f3f5f7; stroke: #cfd6de; stroke-width: 2; }
+    .bubble { fill: #e3e8ee; }
+    .card { fill: #ffffff; stroke: #8a949e; stroke-width: 2; }
+    .chip { fill: #e3e8ee; }
+    .todo { fill: none; stroke: #8a949e; stroke-width: 2; }
+    .spin { fill: none; stroke: #2f5d8a; stroke-width: 3; stroke-linecap: round; }
+    .note-line { stroke: #c9a518; stroke-width: 2; fill: none; stroke-dasharray: 5 4; }
+    .note-dot { fill: #c9a518; }
+    .note { fill: #8a6d00; }
+    @media (prefers-color-scheme: dark) {
+      text { fill: #e4e9ee; }
+      .soft { fill: #9fadba; }
+      .dim { fill: #75808b; }
+      .screen { fill: #1a232c; stroke: #2c3844; }
+      .bubble { fill: #222d38; }
+      .card { fill: #141b22; stroke: #75808b; }
+      .chip { fill: #222d38; }
+      .todo { stroke: #75808b; }
+      .spin { stroke: #7fb0dd; }
+      .note-line { stroke: #e8c93a; }
+      .note-dot { fill: #e8c93a; }
+      .note { fill: #e8c93a; }
+    }
+  </style>
+
+  <!-- 앱 화면 -->
+  <rect class="screen" x="20" y="20" width="560" height="520" rx="22"/>
+
+  <!-- 사용자 요청 -->
+  <rect class="bubble" x="50" y="50" width="500" height="80" rx="18"/>
+  <text x="74" y="84" font-size="17">저가폰 3개를 비교하고 리뷰를 읽어서</text>
+  <text x="74" y="110" font-size="17">스프레드시트로 만들어 줘</text>
+
+  <text class="soft" x="54" y="168" font-size="15">Kryzz · 에이전트</text>
+
+  <!-- 계획 카드 -->
+  <rect class="card" x="50" y="186" width="500" height="236" rx="16"/>
+  <text class="title" x="74" y="224" font-size="18">계획 · 4단계 중 0개 완료</text>
+
+  <path class="spin" d="M82 255 A9 9 0 1 0 91 264"/>
+  <text x="106" y="270" font-size="16">저가폰 리뷰 검색하기</text>
+
+  <circle class="todo" cx="82" cy="308" r="8"/>
+  <text class="dim" x="106" y="314" font-size="16">평이 좋은 리뷰 읽기</text>
+
+  <circle class="todo" cx="82" cy="352" r="8"/>
+  <text class="dim" x="106" y="358" font-size="16">가격·배터리·카메라 비교하기</text>
+
+  <circle class="todo" cx="82" cy="396" r="8"/>
+  <text class="dim" x="106" y="402" font-size="16">스프레드시트 만들기</text>
+
+  <!-- 작업 중 표시 -->
+  <rect class="chip" x="50" y="440" width="500" height="56" rx="16"/>
+  <path class="spin" d="M82 459 A9 9 0 1 0 91 468"/>
+  <text x="106" y="474" font-size="16">에이전트 작업 중…</text>
+
+  <!-- 설명 -->
+  <circle class="note-dot" cx="560" cy="210" r="5"/>
+  <path class="note-line" d="M565 210 H640"/>
+  <text class="note title" x="650" y="204" font-size="16">일을 시작하기 전에 계획부터</text>
+  <text class="soft" x="650" y="228" font-size="14">요청을 받으면 짧은 단계 목록을 먼저 쓴다</text>
+
+  <circle class="note-dot" cx="560" cy="264" r="5"/>
+  <path class="note-line" d="M565 264 H640 V300"/>
+  <text class="note title" x="650" y="304" font-size="16">지금 하는 단계는 돌아가는 표시</text>
+  <text class="soft" x="650" y="328" font-size="14">끝난 단계에는 체크가 붙는다</text>
+
+  <circle class="note-dot" cx="560" cy="378" r="5"/>
+  <path class="note-line" d="M565 378 H640 V392"/>
+  <text class="note title" x="650" y="396" font-size="16">남은 단계는 흐린 빈 동그라미</text>
+  <text class="soft" x="650" y="420" font-size="14">계획이 이상하면 여기서 멈출 수 있다</text>
+
+  <circle class="note-dot" cx="560" cy="468" r="5"/>
+  <path class="note-line" d="M565 468 H640"/>
+  <text class="note title" x="650" y="474" font-size="16">지금 일하고 있다는 표시</text>
+  <text class="soft" x="650" y="498" font-size="14">답이 끝나면 "검색 3번 · 페이지 4개 읽음"</text>
+  <text class="soft" x="650" y="518" font-size="14">같은 작업 기록이 답 아래에 남는다</text>
+</svg>
