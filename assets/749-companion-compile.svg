@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" role="img" aria-labelledby="t d">
+  <title id="t">companion object · companion 블록 · companion 확장을 컴파일하면</title>
+  <desc id="d">companion object 는 Task 클래스에 Companion 싱글턴 객체 필드가 생기고 Task$Companion 클래스가 하나 더 생겨 메서드가 그 객체의 메서드가 된다. companion 블록은 Task 클래스에 바로 static 메서드가 생긴다. companion 확장은 확장을 적은 파일 이름의 클래스(TaskExtKt)에 static 메서드가 생긴다.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" class="head"/>
+    </marker>
+  </defs>
+  <style>
+    text { font-family: 'IBM Plex Sans KR', 'Apple SD Gothic Neo', system-ui, sans-serif; fill: #1b2733; }
+    .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+    .soft { fill: #4a5866; }
+    .title { font-weight: 700; }
+    .line { stroke: #6b7885; stroke-width: 2.5; fill: none; }
+    .head { fill: #6b7885; }
+    .code { fill: #e3e8ee; }
+    .old { fill: #f3f5f7; stroke: #8a949e; stroke-width: 2.5; }
+    .old-title { fill: #5d6873; }
+    .new { fill: #e3ecf5; stroke: #2f5d8a; stroke-width: 2.5; }
+    .new-title { fill: #2f5d8a; }
+    .ext { fill: #fbf3cf; stroke: #c9a518; stroke-width: 2.5; }
+    .ext-title { fill: #8a6d00; }
+    .cls { fill: #ffffff; stroke: #cfd6de; stroke-width: 1.5; }
+    .extra { fill: #ffffff; stroke: #b3261e; stroke-width: 1.5; stroke-dasharray: 6 4; }
+    .warn { fill: #b3261e; }
+    @media (prefers-color-scheme: dark) {
+      text { fill: #e4e9ee; }
+      .soft { fill: #9fadba; }
+      .line { stroke: #8795a3; }
+      .head { fill: #8795a3; }
+      .code { fill: #222d38; }
+      .old { fill: #1a232c; stroke: #75808b; }
+      .old-title { fill: #b5c0cb; }
+      .new { fill: #1b2a3a; stroke: #7fb0dd; }
+      .new-title { fill: #7fb0dd; }
+      .ext { fill: #2e2a14; stroke: #e8c93a; }
+      .ext-title { fill: #e8c93a; }
+      .cls { fill: #141b22; stroke: #2c3844; }
+      .extra { fill: #141b22; stroke: #f2867e; }
+      .warn { fill: #f2867e; }
+    }
+  </style>
+
+  <!-- ① companion object -->
+  <rect class="old" x="15" y="15" width="310" height="570" rx="12"/>
+  <text class="title old-title" x="170" y="50" font-size="19" text-anchor="middle">companion object</text>
+  <text class="soft" x="170" y="74" font-size="14" text-anchor="middle">지금까지의 방식</text>
+  <rect class="code" x="35" y="90" width="270" height="118" rx="8"/>
+  <text class="mono" x="50" y="116" font-size="14">class Task {</text>
+  <text class="mono" x="67" y="138" font-size="14">companion object {</text>
+  <text class="mono" x="84" y="160" font-size="14">fun empty() = …</text>
+  <text class="mono" x="67" y="182" font-size="14">}</text>
+  <text class="mono" x="50" y="200" font-size="14">}</text>
+  <path class="line" d="M170 214 V246" marker-end="url(#arrow)"/>
+  <text class="soft" x="182" y="236" font-size="13">컴파일하면 (JVM)</text>
+  <rect class="cls" x="35" y="254" width="270" height="92" rx="8"/>
+  <text class="mono title" x="50" y="280" font-size="15">Task.class</text>
+  <text class="mono" x="50" y="304" font-size="13">static Companion Companion</text>
+  <text class="soft" x="50" y="326" font-size="13">↑ Task 를 처음 쓸 때 만들어지는 객체</text>
+  <rect class="extra" x="35" y="358" width="270" height="92" rx="8"/>
+  <text class="mono title" x="50" y="384" font-size="15">Task$Companion.class</text>
+  <text class="mono" x="50" y="408" font-size="13">fun empty()</text>
+  <text class="warn" x="50" y="430" font-size="13">↑ 클래스가 하나 더 생김</text>
+  <text class="soft" x="170" y="484" font-size="14" text-anchor="middle">Java 에서 부를 때</text>
+  <text class="mono" x="170" y="508" font-size="14" text-anchor="middle">Task.Companion.empty()</text>
+  <text class="soft" x="170" y="540" font-size="13" text-anchor="middle">@JvmStatic 을 붙여야</text>
+  <text class="soft" x="170" y="558" font-size="13" text-anchor="middle">Task.empty() 로 부를 수 있다</text>
+
+  <!-- ② companion 블록 -->
+  <rect class="new" x="345" y="15" width="310" height="570" rx="12"/>
+  <text class="title new-title" x="500" y="50" font-size="19" text-anchor="middle">companion { } 블록</text>
+  <text class="soft" x="500" y="74" font-size="14" text-anchor="middle">Kotlin 2.5 새 기능 (실험)</text>
+  <rect class="code" x="365" y="90" width="270" height="118" rx="8"/>
+  <text class="mono" x="380" y="116" font-size="14">class Task {</text>
+  <text class="mono" x="397" y="138" font-size="14">companion {</text>
+  <text class="mono" x="414" y="160" font-size="14">fun empty() = …</text>
+  <text class="mono" x="397" y="182" font-size="14">}</text>
+  <text class="mono" x="380" y="200" font-size="14">}</text>
+  <path class="line" d="M500 214 V246" marker-end="url(#arrow)"/>
+  <text class="soft" x="512" y="236" font-size="13">컴파일하면 (JVM)</text>
+  <rect class="cls" x="365" y="254" width="270" height="92" rx="8"/>
+  <text class="mono title" x="380" y="280" font-size="15">Task.class</text>
+  <text class="mono" x="380" y="304" font-size="13">static fun empty()</text>
+  <text class="soft" x="380" y="326" font-size="13">↑ 클래스에 바로 붙은 진짜 static</text>
+  <text class="soft" x="500" y="400" font-size="13" text-anchor="middle">추가 클래스 없음</text>
+  <text class="soft" x="500" y="420" font-size="13" text-anchor="middle">미리 만들어 두는 객체 없음</text>
+  <text class="soft" x="500" y="484" font-size="14" text-anchor="middle">Java 에서 부를 때</text>
+  <text class="mono" x="500" y="508" font-size="14" text-anchor="middle">Task.empty()</text>
+  <text class="soft" x="500" y="540" font-size="13" text-anchor="middle">@JvmStatic 이 필요 없다</text>
+
+  <!-- ③ companion 확장 -->
+  <rect class="ext" x="675" y="15" width="310" height="570" rx="12"/>
+  <text class="title ext-title" x="830" y="50" font-size="19" text-anchor="middle">companion 확장</text>
+  <text class="soft" x="830" y="74" font-size="14" text-anchor="middle">Kotlin 2.5 새 기능 (실험)</text>
+  <rect class="code" x="695" y="90" width="270" height="118" rx="8"/>
+  <text class="soft" x="710" y="116" font-size="13">// TaskExt.kt (다른 파일·모듈)</text>
+  <text class="mono" x="710" y="142" font-size="14">companion fun</text>
+  <text class="mono" x="727" y="164" font-size="14">Task.fromLine(</text>
+  <text class="mono" x="744" y="186" font-size="14">s: String) = …</text>
+  <path class="line" d="M830 214 V246" marker-end="url(#arrow)"/>
+  <text class="soft" x="842" y="236" font-size="13">컴파일하면 (JVM)</text>
+  <rect class="cls" x="695" y="254" width="270" height="92" rx="8"/>
+  <text class="mono title" x="710" y="280" font-size="15">TaskExtKt.class</text>
+  <text class="mono" x="710" y="304" font-size="13">static fun fromLine(String)</text>
+  <text class="soft" x="710" y="326" font-size="13">↑ 확장을 적은 파일의 클래스에 생김</text>
+  <text class="soft" x="830" y="400" font-size="13" text-anchor="middle">Task 클래스 자체는 그대로</text>
+  <text class="soft" x="830" y="420" font-size="13" text-anchor="middle">남의 클래스에도 붙일 수 있다</text>
+  <text class="soft" x="830" y="484" font-size="14" text-anchor="middle">Kotlin 에서 부를 때</text>
+  <text class="mono" x="830" y="508" font-size="14" text-anchor="middle">Task.fromLine("…")</text>
+  <text class="soft" x="830" y="540" font-size="13" text-anchor="middle">Java 에서는 파일 클래스로</text>
+  <text class="mono" x="830" y="558" font-size="13" text-anchor="middle">TaskExtKt.fromLine("…")</text>
+</svg>
