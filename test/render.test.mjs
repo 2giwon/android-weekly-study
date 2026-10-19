@@ -44,6 +44,14 @@ test('표의 각 칸에 그 열의 제목을 data-label 로 붙인다 (좁은 �
   assert.match(html, /<td data-label="&quot;효과&quot; &amp; 결과">줄어든다<\/td>/);
 });
 
+test('글 목록과 글 페이지에는 Aide 상태 뱃지를 붙이지 않는다', () => {
+  for (const html of [renderIndex([post]), renderPost(post)]) {
+    assert.doesNotMatch(html, /class="chip/);
+    assert.doesNotMatch(html, /적용 예정/);
+    assert.match(html, /요약/);
+  }
+});
+
 test('Aide 모아보기는 상태 이름을 한국어로 보여주고 글에 링크한다', () => {
   const html = renderAide([post]);
   assert.match(html, /적용 예정/);

@@ -139,38 +139,7 @@ main,
   color: var(--ink-soft);
 }
 
-/* ── 상태 칩 · 태그 ──────────────────────────── */
-
-.chip {
-  display: inline-block;
-  font-size: 13px;
-  font-weight: 600;
-  line-height: 1;
-  padding: 5px 9px;
-  border-radius: 999px;
-  border: 1.5px solid currentColor;
-  white-space: nowrap;
-}
-
-.chip-candidate {
-  color: var(--ink);
-  background: var(--marker);
-  border-color: var(--marker);
-}
-@media (prefers-color-scheme: dark) {
-  .chip-candidate {
-    color: #1b2733;
-  }
-}
-.chip-planned {
-  color: var(--planned);
-}
-.chip-applied {
-  color: var(--applied);
-}
-.chip-dropped {
-  color: var(--dropped);
-}
+/* ── 태그 ────────────────────────────────────── */
 
 .tags {
   display: flex;
@@ -247,11 +216,11 @@ main,
   color: var(--ink-soft);
 }
 
+/* 형광펜 줄 = Aide 에 가져다 쓸 부분 (첫 화면 안내 문구와 같은 약속) */
 .entry-aide {
-  display: flex;
-  gap: 10px;
-  align-items: baseline;
   margin: 14px 0 0;
+  padding-left: 12px;
+  border-left: 3px solid var(--marker);
   font-size: 15px;
 }
 
@@ -537,10 +506,6 @@ main,
   }
   .entry-title {
     font-size: 21px;
-  }
-  .entry-aide {
-    flex-direction: column;
-    gap: 6px;
   }
   .board {
     grid-template-columns: 1fr;
