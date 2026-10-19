@@ -381,6 +381,31 @@ main,
   white-space: nowrap;
 }
 
+.prose figure {
+  margin: 8px 0 24px;
+}
+
+/* 좁은 화면에서는 그림을 읽을 수 있는 크기로 두고 옆으로 밀어 보게 한다 */
+.figure-scroll {
+  display: block;
+  overflow-x: auto;
+  background: var(--sheet);
+  border-radius: 8px;
+}
+
+.prose figure img {
+  display: block;
+  width: 100%;
+  min-width: 640px;
+  height: auto;
+}
+
+.prose figcaption {
+  margin-top: 8px;
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+
 /* 좁은 칸에서 코드가 글자 중간에 끊기지 않게 한다 (넘치면 표가 가로로 스크롤된다) */
 .prose td code {
   white-space: nowrap;

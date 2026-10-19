@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 630" role="img" aria-labelledby="t d">
+  <title id="t">모듈마다 Swift로 얼마나 넘어가는지</title>
+  <desc id="d">ios-export 우산 모듈이 common 을 api 로 의존한다. common 은 전부 내보내진다. common 이 쓰는 라이브러리 중 코루틴과 Kotlin 표준 라이브러리는 쓰이는 부분만, Koin·kotlinx.serialization·ViewModel 은 빈 껍데기만 내보내지고, implementation 으로 의존하는 db 모듈과 SQLDelight 는 내보내지지 않는다.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" class="head"/>
+    </marker>
+  </defs>
+  <style>
+    text { font-family: 'IBM Plex Sans KR', 'Apple SD Gothic Neo', system-ui, sans-serif; fill: #1b2733; }
+    .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+    .soft { fill: #4a5866; }
+    .title { font-weight: 700; }
+    .line { stroke: #6b7885; stroke-width: 2.5; fill: none; }
+    .dash { stroke-dasharray: 8 6; }
+    .head { fill: #6b7885; }
+    .top { fill: #f8f9fb; stroke: #1b2733; stroke-width: 2.5; }
+    .core { fill: #1b2733; }
+    .core-text { fill: #eef1f4; }
+    .trans { fill: #e3ecf5; stroke: #2f5d8a; stroke-width: 2.5; }
+    .trans-title { fill: #2f5d8a; }
+    .hidden { fill: #fbf3cf; stroke: #c9a518; stroke-width: 2.5; }
+    .hidden-title { fill: #8a6d00; }
+    .none { fill: #f3f5f7; stroke: #8a949e; stroke-width: 2.5; stroke-dasharray: 8 6; }
+    .chip { fill: #ffffff; stroke: #cfd6de; stroke-width: 1.5; }
+    @media (prefers-color-scheme: dark) {
+      text { fill: #e4e9ee; }
+      .soft { fill: #9fadba; }
+      .line { stroke: #8795a3; }
+      .head { fill: #8795a3; }
+      .top { fill: #1a232c; stroke: #e4e9ee; }
+      .core { fill: #e4e9ee; }
+      .core-text { fill: #141b22; }
+      .trans { fill: #1b2a3a; stroke: #7fb0dd; }
+      .trans-title { fill: #7fb0dd; }
+      .hidden { fill: #2e2a14; stroke: #e8c93a; }
+      .hidden-title { fill: #e8c93a; }
+      .none { fill: #1a232c; stroke: #75808b; }
+      .chip { fill: #141b22; stroke: #2c3844; }
+    }
+  </style>
+
+  <!-- 맨 위: 우산 모듈 -->
+  <rect class="top" x="320" y="20" width="360" height="92" rx="12"/>
+  <text class="mono title" x="500" y="58" font-size="24" text-anchor="middle">ios-export</text>
+  <text class="soft" x="500" y="90" font-size="15" text-anchor="middle">우산 모듈: 자기 코드 없이 내보내기 설정만 담음</text>
+
+  <path class="line" d="M500 112 V164" marker-end="url(#arrow)"/>
+  <text class="soft" x="512" y="145" font-size="15"><tspan class="mono">api</tspan> 로 의존</text>
+
+  <!-- 가운데: common -->
+  <rect class="core" x="280" y="168" width="440" height="112" rx="12"/>
+  <text class="mono title core-text" x="500" y="206" font-size="26" text-anchor="middle">common</text>
+  <text class="title core-text" x="500" y="238" font-size="19" text-anchor="middle">전부 내보냄</text>
+  <text class="core-text" x="500" y="264" font-size="14" text-anchor="middle" opacity="0.8">public 선언은 하나도 빠짐없이 → 그래서 explicitApi() 로 줄임</text>
+
+  <!-- 연결선 -->
+  <path class="line" d="M420 280 V318 H170 V354" marker-end="url(#arrow)"/>
+  <path class="line" d="M500 280 V354" marker-end="url(#arrow)"/>
+  <path class="line dash" d="M580 280 V318 H830 V354" marker-end="url(#arrow)"/>
+  <text class="soft" x="705" y="308" font-size="14" text-anchor="middle"><tspan class="mono">implementation</tspan> 으로 의존</text>
+
+  <!-- 왼쪽: 쓰이는 부분만 -->
+  <rect class="trans" x="15" y="360" width="310" height="255" rx="12"/>
+  <text class="title trans-title" x="170" y="396" font-size="20" text-anchor="middle">쓰이는 부분만 내보냄</text>
+  <text class="soft" x="170" y="422" font-size="14" text-anchor="middle">common 의 public 코드가</text>
+  <text class="soft" x="170" y="441" font-size="14" text-anchor="middle">실제로 닿는 타입·함수만</text>
+  <rect class="chip" x="45" y="458" width="250" height="40" rx="8"/>
+  <text class="mono" x="170" y="484" font-size="16" text-anchor="middle">kotlinx-coroutines</text>
+  <rect class="chip" x="45" y="508" width="250" height="40" rx="8"/>
+  <text x="170" y="534" font-size="16" text-anchor="middle">Kotlin 표준 라이브러리</text>
+  <text class="soft" x="170" y="576" font-size="13" text-anchor="middle">Kermit·Ktor 등은 닿는 곳이 없어서</text>
+  <text class="soft" x="170" y="595" font-size="13" text-anchor="middle">Swift 코드가 하나도 안 만들어짐</text>
+
+  <!-- 가운데: HIDDEN -->
+  <rect class="hidden" x="345" y="360" width="310" height="255" rx="12"/>
+  <text class="title hidden-title" x="500" y="396" font-size="20" text-anchor="middle">HIDDEN: 빈 껍데기만</text>
+  <text class="soft" x="500" y="422" font-size="14" text-anchor="middle">우리 코드가 언급하는 타입의</text>
+  <text class="soft" x="500" y="441" font-size="14" text-anchor="middle">이름만 남고 속은 비어 있음</text>
+  <rect class="chip" x="375" y="458" width="250" height="40" rx="8"/>
+  <text class="mono" x="500" y="484" font-size="16" text-anchor="middle">Koin</text>
+  <rect class="chip" x="375" y="508" width="250" height="40" rx="8"/>
+  <text class="mono" x="500" y="534" font-size="16" text-anchor="middle">kotlinx.serialization</text>
+  <rect class="chip" x="375" y="558" width="250" height="40" rx="8"/>
+  <text class="mono" x="500" y="584" font-size="16" text-anchor="middle">lifecycle ViewModel</text>
+
+  <!-- 오른쪽: 내보내지 않음 -->
+  <rect class="none" x="675" y="360" width="310" height="255" rx="12"/>
+  <text class="title" x="830" y="396" font-size="20" text-anchor="middle">내보내지 않음</text>
+  <text class="soft" x="830" y="422" font-size="14" text-anchor="middle">common 안의 internal 코드만 쓰므로</text>
+  <text class="soft" x="830" y="441" font-size="14" text-anchor="middle">Swift 쪽에는 보이지 않음</text>
+  <rect class="chip" x="705" y="458" width="250" height="40" rx="8"/>
+  <text class="mono" x="830" y="484" font-size="16" text-anchor="middle">db</text>
+  <path class="line" d="M830 498 V524" marker-end="url(#arrow)"/>
+  <rect class="chip" x="705" y="528" width="250" height="40" rx="8"/>
+  <text class="mono" x="830" y="554" font-size="16" text-anchor="middle">SQLDelight</text>
+</svg>
