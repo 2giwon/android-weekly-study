@@ -524,6 +524,43 @@ main,
     margin-inline: -12px;
     padding-inline: 12px;
   }
+
+  /* 좁은 화면에서는 표의 한 줄을 카드 한 장으로 쌓고, 칸마다 열 제목(data-label)을 붙인다 */
+  .prose table,
+  .prose tbody,
+  .prose tr,
+  .prose td {
+    display: block;
+    width: 100%;
+  }
+  .prose thead {
+    display: none;
+  }
+  .prose tr {
+    padding: 14px 16px;
+    background: var(--sheet);
+    border-radius: 6px;
+  }
+  .prose tr + tr {
+    margin-top: 10px;
+  }
+  .prose td {
+    padding: 0;
+    border: 0;
+  }
+  .prose td + td {
+    margin-top: 10px;
+  }
+  .prose td[data-label]::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink-soft);
+  }
+  .prose td code {
+    white-space: normal;
+  }
 }
 
 @media (min-width: 761px) and (max-width: 1000px) {

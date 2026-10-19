@@ -35,6 +35,15 @@ test('글 페이지는 한 단계 위로 올라가는 경로로 스타일과 홈
   assert.match(html, /href="https:\/\/example\.com\/a\?x=1&amp;y=2"/);
 });
 
+test('표의 각 칸에 그 열의 제목을 data-label 로 붙인다 (좁은 화면에서 카드로 쌓을 때 쓴다)', () => {
+  const html = renderPost({
+    ...post,
+    html: '<table><thead><tr><th>방법</th><th>"효과" &amp; 결과</th></tr></thead><tbody><tr><td>숨기기</td><td>줄어든다</td></tr></tbody></table>',
+  });
+  assert.match(html, /<td data-label="방법">숨기기<\/td>/);
+  assert.match(html, /<td data-label="&quot;효과&quot; &amp; 결과">줄어든다<\/td>/);
+});
+
 test('Aide 모아보기는 상태 이름을 한국어로 보여주고 글에 링크한다', () => {
   const html = renderAide([post]);
   assert.match(html, /적용 예정/);
