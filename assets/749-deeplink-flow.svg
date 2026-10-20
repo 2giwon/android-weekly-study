@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" role="img" aria-labelledby="t d">
+  <title id="t">KMP 딥 링크의 두 반쪽 — 받는 쪽과 길 찾는 쪽</title>
+  <desc id="d">Android는 인텐트 필터로 링크를 받아 onCreate(앱이 꺼져 있을 때)와 onNewIntent(앱이 켜져 있을 때)에서, iOS는 onOpenURL(myapp://)과 onContinueUserActivity(https://)에서 URL을 문자열로 꺼낸다. 두 플랫폼 모두 같은 handle(문자열)을 부른다. 공용 코드에서는 파서가 문자열을 목적지 타입(OrderDetail, Profile, Home, Unknown)으로 바꾸고, 핸들러는 내비게이션이 준비됐으면 바로 이동하고 아니면 보류해 두었다가 준비되면 이동한다.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" class="head"/>
+    </marker>
+  </defs>
+  <style>
+    text { font-family: 'IBM Plex Sans KR', 'Apple SD Gothic Neo', system-ui, sans-serif; fill: #1b2733; }
+    .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+    .soft { fill: #4a5866; }
+    .title { font-weight: 700; }
+    .line { stroke: #6b7885; stroke-width: 2.5; fill: none; }
+    .head { fill: #6b7885; }
+    .plat { fill: #f3f5f7; stroke: #8a949e; stroke-width: 2.5; }
+    .plat-title { fill: #5d6873; }
+    .shared { fill: #e3ecf5; stroke: #2f5d8a; stroke-width: 2.5; }
+    .shared-title { fill: #2f5d8a; }
+    .box { fill: #ffffff; stroke: #cfd6de; stroke-width: 1.5; }
+    .str { fill: #fbf3cf; stroke: #c9a518; stroke-width: 2; }
+    .str-title { fill: #8a6d00; }
+    .wait { fill: #ffffff; stroke: #8a949e; stroke-width: 1.5; stroke-dasharray: 6 4; }
+    @media (prefers-color-scheme: dark) {
+      text { fill: #e4e9ee; }
+      .soft { fill: #9fadba; }
+      .line { stroke: #8795a3; }
+      .head { fill: #8795a3; }
+      .plat { fill: #1a232c; stroke: #75808b; }
+      .plat-title { fill: #b5c0cb; }
+      .shared { fill: #1b2a3a; stroke: #7fb0dd; }
+      .shared-title { fill: #7fb0dd; }
+      .box { fill: #141b22; stroke: #2c3844; }
+      .str { fill: #2e2a14; stroke: #e8c93a; }
+      .str-title { fill: #e8c93a; }
+      .wait { fill: #141b22; stroke: #75808b; }
+    }
+  </style>
+
+  <!-- 받는 쪽: Android -->
+  <rect class="plat" x="15" y="15" width="300" height="270" rx="12"/>
+  <text class="title plat-title" x="165" y="48" font-size="18" text-anchor="middle">Android — 받는 쪽</text>
+  <rect class="box" x="35" y="66" width="260" height="58" rx="8"/>
+  <text x="50" y="90" font-size="14">매니페스트의 인텐트 필터</text>
+  <text class="soft" x="50" y="112" font-size="13">"이 주소는 내 앱이 연다"고 등록</text>
+  <rect class="box" x="35" y="136" width="260" height="58" rx="8"/>
+  <text class="mono" x="50" y="160" font-size="14">onCreate</text>
+  <text class="soft" x="50" y="182" font-size="13">앱이 꺼져 있다가 링크로 켜질 때</text>
+  <rect class="box" x="35" y="206" width="260" height="58" rx="8"/>
+  <text class="mono" x="50" y="230" font-size="14">onNewIntent</text>
+  <text class="soft" x="50" y="252" font-size="13">이미 켜진 앱에 새 링크가 올 때</text>
+
+  <!-- 받는 쪽: iOS -->
+  <rect class="plat" x="15" y="315" width="300" height="270" rx="12"/>
+  <text class="title plat-title" x="165" y="348" font-size="18" text-anchor="middle">iOS — 받는 쪽</text>
+  <rect class="box" x="35" y="366" width="260" height="58" rx="8"/>
+  <text x="50" y="390" font-size="14">Info.plist · Associated Domains</text>
+  <text class="soft" x="50" y="412" font-size="13">주소 등록 (방식이 Android와 다름)</text>
+  <rect class="box" x="35" y="436" width="260" height="58" rx="8"/>
+  <text class="mono" x="50" y="460" font-size="14">onOpenURL</text>
+  <text class="soft" x="50" y="482" font-size="13">myapp:// 같은 직접 만든 주소</text>
+  <rect class="box" x="35" y="506" width="260" height="58" rx="8"/>
+  <text class="mono" x="50" y="530" font-size="14">onContinueUserActivity</text>
+  <text class="soft" x="50" y="552" font-size="13">https:// 유니버설 링크</text>
+
+  <!-- 문자열 하나로 모인다 -->
+  <path class="line" d="M315 200 H345 V284 H378" marker-end="url(#arrow)"/>
+  <path class="line" d="M315 500 H345 V316 H378" marker-end="url(#arrow)"/>
+  <rect class="str" x="380" y="250" width="160" height="100" rx="10"/>
+  <text class="title str-title" x="460" y="282" font-size="15" text-anchor="middle">URL 문자열만</text>
+  <text class="mono" x="460" y="308" font-size="13" text-anchor="middle">handle(raw)</text>
+  <text class="soft" x="460" y="332" font-size="12" text-anchor="middle">플랫폼은 여기까지만</text>
+  <path class="line" d="M540 300 H578" marker-end="url(#arrow)"/>
+
+  <!-- 길 찾는 쪽: 공용 코드 -->
+  <rect class="shared" x="580" y="15" width="405" height="570" rx="12"/>
+  <text class="title shared-title" x="782" y="48" font-size="18" text-anchor="middle">공용 코드(commonMain) — 길 찾는 쪽</text>
+
+  <rect class="box" x="600" y="70" width="365" height="84" rx="8"/>
+  <text class="mono title" x="616" y="96" font-size="15">DeepLinkParser</text>
+  <text x="616" y="120" font-size="13">문자열을 잘라 어느 화면인지 알아낸다</text>
+  <text class="soft" x="616" y="142" font-size="12">기기 없이 단위 테스트할 수 있는 순수 함수</text>
+  <path class="line" d="M782 154 V178" marker-end="url(#arrow)"/>
+
+  <rect class="box" x="600" y="180" width="365" height="134" rx="8"/>
+  <text class="mono title" x="616" y="206" font-size="15">DeepLinkDestination</text>
+  <text x="616" y="230" font-size="13">갈 수 있는 곳을 정해 둔 타입</text>
+  <text class="mono" x="630" y="256" font-size="13">OrderDetail(orderId)</text>
+  <text class="mono" x="630" y="278" font-size="13">Profile(userId) · Home</text>
+  <text class="mono" x="630" y="300" font-size="13">Unknown</text>
+  <text class="soft" x="700" y="300" font-size="13">← 이상한 링크는 전부 여기로</text>
+  <path class="line" d="M782 314 V338" marker-end="url(#arrow)"/>
+
+  <rect class="box" x="600" y="340" width="365" height="84" rx="8"/>
+  <text class="mono title" x="616" y="366" font-size="15">DeepLinkHandler</text>
+  <text x="616" y="390" font-size="13">내비게이션이 준비됐나?</text>
+  <text class="soft" x="616" y="412" font-size="12">예 → 바로 이동 / 아니오 → 보류</text>
+  <path class="line" d="M700 424 V470" marker-end="url(#arrow)"/>
+  <path class="line" d="M870 424 V470" marker-end="url(#arrow)"/>
+
+  <rect class="box" x="600" y="472" width="200" height="92" rx="8"/>
+  <text class="mono title" x="616" y="498" font-size="14">AppNavigator</text>
+  <text x="616" y="522" font-size="13">실제 화면으로 이동</text>
+  <text class="soft" x="616" y="544" font-size="12">Navigation 3 등 기존 방식</text>
+
+  <rect class="wait" x="815" y="472" width="150" height="92" rx="8"/>
+  <text class="mono title" x="830" y="498" font-size="14">pending</text>
+  <text x="830" y="522" font-size="13">준비되면</text>
+  <text x="830" y="544" font-size="13">꺼내서 이동</text>
+  <path class="line" d="M815 518 H802" marker-end="url(#arrow)"/>
+</svg>
