@@ -1,0 +1,138 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 560" role="img" aria-labelledby="t d">
+  <title id="t">디자인 시스템 계약과 세 겹의 자동 검사</title>
+  <desc id="d">왼쪽은 디자인 시스템이 정해 둔 계약(색·간격·글자·모양 토큰과 공용 버튼 컴포넌트)이다. 가운데에는 계약을 지키는지 자동으로 보는 세 겹의 검사가 있다. Konsist는 패키지와 의존 같은 구조를, 직접 만든 Android Lint 규칙은 소스 코드에 금지된 모양이 있는지를, Compose UI 테스트는 실제로 그려진 화면의 동작을 본다. 오른쪽의 기능 화면들은 세 검사를 모두 통과해야 하고, 하나라도 어기면 PR 검사가 빨간불이 되어 합쳐지지 못한다.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" class="head"/>
+    </marker>
+  </defs>
+  <style>
+    text { font-family: 'IBM Plex Sans KR', 'Apple SD Gothic Neo', system-ui, sans-serif; fill: #1b2733; }
+    .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+    .soft { fill: #4a5866; }
+    .title { font-weight: 700; }
+    .line { stroke: #6b7885; stroke-width: 2.5; fill: none; }
+    .head { fill: #6b7885; }
+    .contract { fill: #e3ecf5; stroke: #2f5d8a; stroke-width: 2.5; }
+    .contract-title { fill: #2f5d8a; }
+    .check { fill: #f3f5f7; stroke: #8a949e; stroke-width: 2.5; }
+    .check-title { fill: #5d6873; }
+    .box { fill: #ffffff; stroke: #cfd6de; stroke-width: 1.5; }
+    .token { fill: #ffffff; stroke: #2f5d8a; stroke-width: 1.5; }
+    .ok { fill: #2e7d6b; }
+    .ok-text { fill: #ffffff; font-weight: 700; }
+    .fail { fill: #fbe4e1; stroke: #b3402f; stroke-width: 2; }
+    .fail-title { fill: #9a3324; }
+    @media (prefers-color-scheme: dark) {
+      text { fill: #e4e9ee; }
+      .soft { fill: #9fadba; }
+      .line { stroke: #8795a3; }
+      .head { fill: #8795a3; }
+      .contract { fill: #1b2a3a; stroke: #7fb0dd; }
+      .contract-title { fill: #7fb0dd; }
+      .check { fill: #1a232c; stroke: #75808b; }
+      .check-title { fill: #b5c0cb; }
+      .box { fill: #141b22; stroke: #2c3844; }
+      .token { fill: #141b22; stroke: #7fb0dd; }
+      .ok { fill: #6cc4ad; }
+      .ok-text { fill: #141b22; }
+      .fail { fill: #3a1e1a; stroke: #e08a7a; }
+      .fail-title { fill: #f0a595; }
+    }
+  </style>
+
+  <!-- 왼쪽: 계약 -->
+  <rect class="contract" x="15" y="15" width="290" height="530" rx="12"/>
+  <text class="title contract-title" x="160" y="48" font-size="18" text-anchor="middle">계약 — 디자인 시스템</text>
+  <text class="soft" x="160" y="72" font-size="13" text-anchor="middle">기능 코드가 가져다 쓰는 정해진 값</text>
+
+  <rect class="token" x="35" y="92" width="250" height="62" rx="8"/>
+  <text x="50" y="116" font-size="14">색</text>
+  <text class="mono" x="50" y="140" font-size="13">MaterialTheme.colorScheme</text>
+
+  <rect class="token" x="35" y="166" width="250" height="62" rx="8"/>
+  <text x="50" y="190" font-size="14">간격·크기</text>
+  <text class="mono" x="50" y="214" font-size="13">Spacing.md · Sizes.button</text>
+
+  <rect class="token" x="35" y="240" width="250" height="62" rx="8"/>
+  <text x="50" y="264" font-size="14">글자</text>
+  <text class="mono" x="50" y="288" font-size="13">typography.titleLarge</text>
+
+  <rect class="token" x="35" y="314" width="250" height="62" rx="8"/>
+  <text x="50" y="338" font-size="14">모양(모서리 둥글기)</text>
+  <text class="mono" x="50" y="362" font-size="13">shapes.medium</text>
+
+  <rect class="token" x="35" y="388" width="250" height="62" rx="8"/>
+  <text x="50" y="412" font-size="14">공용 컴포넌트</text>
+  <text class="mono" x="50" y="436" font-size="13">PrimaryButton( )</text>
+
+  <text class="soft" x="160" y="486" font-size="13" text-anchor="middle">값은 한 곳에서만 정한다.</text>
+  <text class="soft" x="160" y="508" font-size="13" text-anchor="middle">기능 코드는 이름으로 부른다.</text>
+
+  <!-- 계약 → 검사 -->
+  <path class="line" d="M305 280 H343" marker-end="url(#arrow)"/>
+
+  <!-- 가운데: 검사 세 겹 -->
+  <rect class="check" x="345" y="15" width="310" height="530" rx="12"/>
+  <text class="title check-title" x="500" y="48" font-size="18" text-anchor="middle">자동 검사 — 세 겹</text>
+  <text class="soft" x="500" y="72" font-size="13" text-anchor="middle">규칙마다 잘 잡는 도구가 다르다</text>
+
+  <rect class="box" x="365" y="92" width="270" height="130" rx="8"/>
+  <text class="title" x="380" y="118" font-size="15">Konsist</text>
+  <text x="380" y="142" font-size="13">구조를 본다</text>
+  <text class="soft" x="380" y="166" font-size="12">패키지 위치 · 무엇을 import 하나</text>
+  <text class="soft" x="380" y="186" font-size="12">이름 규칙 · 의존 방향</text>
+  <rect class="ok" x="380" y="196" width="64" height="20" rx="10"/>
+  <text class="ok-text" x="412" y="211" font-size="12" text-anchor="middle">통과</text>
+
+  <rect class="box" x="365" y="236" width="270" height="130" rx="8"/>
+  <text class="title" x="380" y="262" font-size="15">직접 만든 Android Lint 규칙</text>
+  <text x="380" y="286" font-size="13">코드에 금지된 모양이 있나 본다</text>
+  <text class="mono soft" x="380" y="310" font-size="12">Color(0xFF…) · 19.sp · 17.dp</text>
+  <text class="soft" x="380" y="330" font-size="12">허용된 패키지는 빼고 본다</text>
+  <rect class="ok" x="380" y="340" width="64" height="20" rx="10"/>
+  <text class="ok-text" x="412" y="355" font-size="12" text-anchor="middle">통과</text>
+
+  <rect class="box" x="365" y="380" width="270" height="130" rx="8"/>
+  <text class="title" x="380" y="406" font-size="15">Compose UI 테스트</text>
+  <text x="380" y="430" font-size="13">그려진 화면의 동작을 본다</text>
+  <text class="soft" x="380" y="454" font-size="12">큰 글씨에서도 읽히나 · 눌림 영역</text>
+  <text class="soft" x="380" y="474" font-size="12">로딩·오류·비활성 상태 · 접근성</text>
+  <rect class="ok" x="380" y="484" width="64" height="20" rx="10"/>
+  <text class="ok-text" x="412" y="499" font-size="12" text-anchor="middle">통과</text>
+
+  <!-- 검사 → 기능 화면 -->
+  <path class="line" d="M655 200 H693" marker-end="url(#arrow)"/>
+  <path class="line" d="M655 440 H693" marker-end="url(#arrow)"/>
+
+  <!-- 오른쪽: 기능 화면 -->
+  <rect class="contract" x="695" y="15" width="290" height="330" rx="12"/>
+  <text class="title contract-title" x="840" y="48" font-size="18" text-anchor="middle">기능 화면</text>
+
+  <rect class="box" x="715" y="70" width="250" height="76" rx="8"/>
+  <text class="mono" x="730" y="98" font-size="14">feature.home</text>
+  <text class="mono soft" x="730" y="124" font-size="12">padding(Spacing.md)</text>
+  <circle class="ok" cx="940" cy="94" r="12"/>
+  <path d="M934 94 l4 4 l8 -8" stroke="#ffffff" stroke-width="2.5" fill="none"/>
+
+  <rect class="box" x="715" y="158" width="250" height="76" rx="8"/>
+  <text class="mono" x="730" y="186" font-size="14">feature.search</text>
+  <text class="mono soft" x="730" y="212" font-size="12">style = titleLarge</text>
+  <circle class="ok" cx="940" cy="182" r="12"/>
+  <path d="M934 182 l4 4 l8 -8" stroke="#ffffff" stroke-width="2.5" fill="none"/>
+
+  <rect class="box" x="715" y="246" width="250" height="76" rx="8"/>
+  <text class="mono" x="730" y="274" font-size="14">feature.profile</text>
+  <text class="mono soft" x="730" y="300" font-size="12">PrimaryButton(…)</text>
+  <circle class="ok" cx="940" cy="270" r="12"/>
+  <path d="M934 270 l4 4 l8 -8" stroke="#ffffff" stroke-width="2.5" fill="none"/>
+
+  <!-- 어겼을 때 -->
+  <rect class="fail" x="695" y="365" width="290" height="180" rx="12"/>
+  <text class="title fail-title" x="715" y="396" font-size="16">하나라도 어기면</text>
+  <text class="mono" x="715" y="426" font-size="13">val accent = Color(0xFF…)</text>
+  <text x="715" y="456" font-size="13">PR 검사가 빨간불 → 합칠 수 없다</text>
+  <text class="soft" x="715" y="484" font-size="12">오류 문구가 알려 준다:</text>
+  <text class="soft" x="715" y="504" font-size="12">무엇을 어겼나 · 왜 규칙이 있나 ·</text>
+  <text class="soft" x="715" y="524" font-size="12">대신 무엇을 쓰나</text>
+</svg>
