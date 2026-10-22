@@ -64,6 +64,9 @@ aide:
 | 코드 | 블록으로 인용하고 **블록 바로 아래 `> 출처: 파일명 (링크, 라이선스)`**. 이어서 줄 단위로 풀어 설명 | 직접 쓴 스케치로 대신하고 "직접 쓴 스케치"라고 밝힌다 |
 | 그림 | 출처를 적고 `assets/` 에 넣어도 된다 | **파일을 복사하지 않는다** (공개 repo 재배포). 같은 내용을 `assets/<이슈>-<이름>.svg` 로 **한국어로 다시 그리고**, 캡션에 "원문 그림을 바탕으로 다시 그림" + 원문 링크 |
 
+- **원문 그림·영상을 그대로 보여 주고 싶으면 원문 서버 주소를 걸어 넣는다** (2026-10-22 사용자 결정, #749 Heron 글). 파일을 repo 에 복사하지 않으니 재배포가 아니다.
+  원문이 지우면 깨지므로 그림·영상마다 무엇이 보이는지 글로도 적는다. 스크린샷·영상은 `<figure class="media">`(여러 장은 안에 `<div class="media-row">`)로 넣고,
+  영상은 `<video src=… controls playsinline preload="metadata">` 로 둔다 — 누르기 전에 영상 전체를 받지 않는다
 - 다시 그린 SVG 는 파일 안 `<style>` 에 `@media (prefers-color-scheme: dark)` 를 넣어 다크 모드를 맞춘다 (`assets/748-modules.svg` 참고)
 - 그림은 `<figure><a class="figure-scroll" href="../assets/X.svg"><img ...></a><figcaption>…</figcaption></figure>` 로 넣는다 — 좁은 화면에서 옆으로 밀어 보고, 누르면 크게 열린다
 

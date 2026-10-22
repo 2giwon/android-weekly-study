@@ -17,7 +17,7 @@ aide:
 
 Bluesky 앱 Heron을 혼자 만드는 저자는 앱 전체를 **"유리"라는 재질 하나로 비유**하고, 높이에 따라 세 가지 유리를 정했다. 바닥의 **무광 유리**(타임라인 카드), 가운데의 **새틴 유리**(반투명 머리글), 맨 위의 **플로트 유리**(떠 있는 탭 막대와 버튼)다. 무광과 새틴은 Heron이 Compose로 직접 그려 **Android와 iOS에서 똑같이** 보이게 하고, 플로트는 일부러 **각 플랫폼의 기본 부품**을 그대로 쓴다. 앱 대부분은 자기 브랜드로 지키고, 가장 자주 만지는 탐색 막대 하나만 플랫폼에 맡기는 셈이다. 글의 뒷부분은 이 디자인을 실제로 그리면서 부딪힌 문제, 특히 **화면 전환 애니메이션(공유 요소 전환)과 블러가 충돌하는 문제**를 어떻게 숨겼는지를 다룬다.
 
-> 원문은 저자의 개인 블로그에 실렸고 글 자체에는 라이선스 표시가 없다. 그래서 원문의 그림(경쟁 앱 화면 3장, 뼈대 그림 4장, 실제 화면 4장)과 영상 5개는 복사하지 않았다. 세 가지 유리를 보여 주는 뼈대 그림과, 화면 전환 중 블러를 다루는 순서는 **한국어 그림으로 다시 그렸다.** 나머지 화면과 영상은 본문에서 무엇이 보이는지 말로 옮겼다. 원문에는 코드가 없다. 대신 원문이 링크한 Heron 저장소는 **Apache-2.0** 라이선스라서, 원문이 설명한 부분의 실제 코드를 인용하고 출처를 붙였다(2026-10-22 기준 `main` 커밋 `dca308b`).
+> 원문은 저자의 개인 블로그에 실렸고 글 자체에는 라이선스 표시가 없다. 그래서 원문의 그림 12장(표지 1장, 경쟁 앱 화면 3장, 뼈대 그림 4장, 실제 화면 4장)과 영상 5개는 **이 블로그에 복사하지 않고 원문 서버의 주소를 그대로 걸어** 보여 준다. 원문 쪽에서 파일을 지우거나 옮기면 이 글에서도 보이지 않게 된다. 그래서 그림과 영상마다 무엇이 보이는지 글로도 적었다. 세 가지 유리를 보여 주는 뼈대 그림과, 화면 전환 중 블러를 다루는 순서는 설명을 더해 **한국어 그림으로 다시 그렸다.** 원문에는 코드가 없다. 대신 원문이 링크한 Heron 저장소는 **Apache-2.0** 라이선스라서, 원문이 설명한 부분의 실제 코드를 인용하고 출처를 붙였다(2026-10-22 기준 `main` 커밋 `dca308b`).
 
 ## 먼저 알아 둘 말
 
@@ -61,6 +61,8 @@ Bluesky 앱 Heron을 혼자 만드는 저자는 앱 전체를 **"유리"라는 �
 
 ## 서론 — 플랫폼을 따를 것인가, 브랜드를 지킬 것인가
 
+<figure class="media"><img src="https://storage.googleapis.com/tunji-web-public/articles%2F6acf75b3c23999c5f99f8d5b%2Fheron-material-design-thumb.png" alt="원문 표지 그림" loading="lazy"><figcaption>원문 표지 그림. 원문 서버에서 불러옴 (<a href="https://www.tunjid.com/articles/material-is-the-metaphor-pushing-the-limits-of-building-with-material-design-cross-platform-with-jetpack-compose-6acf75b3c23999c5f99f8d5b">원문</a>)</figcaption></figure>
+
 - **플랫폼에 맞춰 디자인하는 것은 줄타기다.**
   - Android와 iOS는 각자 고유한 생김새와 시각 신호가 있다. 기본 부품만 그대로 쓰면 앱이 **찍어 낸 듯 평범해진다.** 폰 안의 다른 앱들 사이에 묻혀 기억에 남지 않는다.
   - 반대로 좋은 브랜드는 어디에 놓여도 한눈에 알아볼 수 있어야 한다.
@@ -77,6 +79,9 @@ Bluesky 앱 Heron을 혼자 만드는 저자는 앱 전체를 **"유리"라는 �
 - **Twitter(X), Bluesky, Threads 세 앱의 화면은 거의 같다.**
   - 원문은 세 앱의 타임라인 화면을 나란히 보여 준다. 세 화면 모두 **위에 앱 바, 그 아래 줄 없이 이어지는 납작한 글 목록, 글마다 왼쪽에 둥근 프로필 사진과 그 오른쪽으로 들여 쓴 본문, 아래에 하단 탭 막대**로 되어 있다. 아이콘 모양까지 비슷하다.
   - 저자는 이를 "짧은 글 앱의 표준 디자인"이라 부른다. 좋게 말하면 표준이고, 나쁘게 말하면 **개성이 없다.**
+
+<figure class="media"><div class="media-row"><img src="https://storage.googleapis.com/tunji-web-public/articles/6acf75b3c23999c5f99f8d5b/twitter-tl.jpg" alt="Twitter 타임라인 화면" loading="lazy"><img src="https://storage.googleapis.com/tunji-web-public/articles/6acf75b3c23999c5f99f8d5b/bluesky-tl.jpg" alt="Bluesky 타임라인 화면" loading="lazy"><img src="https://storage.googleapis.com/tunji-web-public/articles/6acf75b3c23999c5f99f8d5b/threads-tl.jpg" alt="Threads 타임라인 화면" loading="lazy"></div><figcaption>왼쪽부터 Twitter, Bluesky, Threads의 타임라인. 원문 이미지, 원문 서버에서 불러옴 (<a href="https://www.tunjid.com/articles/material-is-the-metaphor-pushing-the-limits-of-building-with-material-design-cross-platform-with-jetpack-compose-6acf75b3c23999c5f99f8d5b#convergent-design">원문</a>)</figcaption></figure>
+
   - 그래서 요즘 유행하는 말투를 빌려 "짧은 글 앱 디자인은 다 풀린 문제인 것 같다"고 비꼰다. Heron은 이 수렴에서 벗어나려 한다.
 
 ## 2. 재질이 곧 비유다 — 세 가지 유리
@@ -99,6 +104,10 @@ Bluesky 앱 Heron을 혼자 만드는 저자는 앱 전체를 **"유리"라는 �
   - 무광 유리 카드가 화면을 가득 채우고, 위쪽의 새틴 유리 카테고리 탭 머리글이 그 내용 일부를 흐리게 가리며, 맨 아래에 탭 막대가 모든 것 위에 떠 있다.
   - Android와 iOS 그림은 **카드와 머리글은 같고, 아래 탭 막대만 다르다.** Android는 Material 3 모양, iOS는 liquid glass 모양이다.
 
+<figure class="media"><div class="media-row"><img src="https://storage.googleapis.com/tunji-web-public/articles/6acf75b3c23999c5f99f8d5b/wireframe-android-dark.png" alt="Heron Android 다크 모드 뼈대 그림" loading="lazy"><img src="https://storage.googleapis.com/tunji-web-public/articles/6acf75b3c23999c5f99f8d5b/wireframe-ios-dark.png" alt="Heron iOS 다크 모드 뼈대 그림" loading="lazy"><img src="https://storage.googleapis.com/tunji-web-public/articles/6acf75b3c23999c5f99f8d5b/wireframe-android-light.png" alt="Heron Android 라이트 모드 뼈대 그림" loading="lazy"><img src="https://storage.googleapis.com/tunji-web-public/articles/6acf75b3c23999c5f99f8d5b/wireframe-ios-light.png" alt="Heron iOS 라이트 모드 뼈대 그림" loading="lazy"></div><figcaption>Heron의 재질을 보여 주는 뼈대 그림. 왼쪽부터 Android 다크, iOS 다크, Android 라이트, iOS 라이트. 원문 이미지, 원문 서버에서 불러옴 (<a href="https://www.tunjid.com/articles/material-is-the-metaphor-pushing-the-limits-of-building-with-material-design-cross-platform-with-jetpack-compose-6acf75b3c23999c5f99f8d5b#material-is-the-metaphor">원문</a>)</figcaption></figure>
+
+아래 그림은 위의 Android 라이트 모드 뼈대를 다시 그리고, 옆에 세 층의 단면과 설명을 붙인 것이다.
+
 <figure><a class="figure-scroll" href="../assets/749-heron-glass-layers.svg"><img src="../assets/749-heron-glass-layers.svg" alt="왼쪽은 Heron 홈 화면의 뼈대로, 타임라인 카드(무광 유리)가 화면을 채우고 위쪽 탭 머리글(새틴 유리)이 내용을 반쯤 가리며 아래쪽 탭 막대와 글쓰기 버튼(플로트 유리)이 떠 있다. 오른쪽은 세 유리를 옆에서 본 단면으로 아래부터 무광, 새틴, 플로트 순서다" loading="lazy"></a><figcaption>Heron의 세 가지 유리 층. 원문의 뼈대 그림(Android 라이트 모드)을 바탕으로 다시 그리고, 층의 설명을 더함 (<a href="https://www.tunjid.com/articles/material-is-the-metaphor-pushing-the-limits-of-building-with-material-design-cross-platform-with-jetpack-compose-6acf75b3c23999c5f99f8d5b#material-is-the-metaphor">원문</a>)</figcaption></figure>
 
 ## 3. 타임라인의 무광 유리
@@ -113,6 +122,8 @@ Bluesky 앱 Heron을 혼자 만드는 저자는 앱 전체를 **"유리"라는 �
   - 덕분에 세 앱이 모두 쓰는 "프로필 사진 폭만큼 본문을 들여 쓰기"에서 벗어났다. Heron에서는 **본문 일부가 프로필 사진 아래까지** 흐른다.
 - **원문의 실제 화면 두 장**: iPhone 18(라이트 모드)과 Pixel 10 Pro Fold(다크 모드)의 타임라인이다. 폴더블의 넓은 화면에서는 카드가 **두 열 격자**로 놓이고, 사진이 큰 글과 짧은 글이 카드 단위로 섞여 있다. 이 넓은 화면에서는 탐색도 하단 탭 막대가 아니라 **왼쪽의 세로 탐색 막대**(navigation rail)로 바뀐다.
 
+<figure class="media"><div class="media-row"><img src="https://storage.googleapis.com/tunji-web-public/articles/6acf75b3c23999c5f99f8d5b/matte-ios-2.png" alt="iPhone 18 라이트 모드의 무광 유리 타임라인" loading="lazy"><img src="https://storage.googleapis.com/tunji-web-public/articles/6acf75b3c23999c5f99f8d5b/matte-android.png" alt="Pixel 10 Pro Fold 다크 모드의 무광 유리 타임라인" loading="lazy"></div><figcaption>왼쪽은 iPhone 18 라이트 모드, 오른쪽은 Pixel 10 Pro Fold 다크 모드의 무광 유리 타임라인. 원문 이미지, 원문 서버에서 불러옴 (<a href="https://www.tunjid.com/articles/material-is-the-metaphor-pushing-the-limits-of-building-with-material-design-cross-platform-with-jetpack-compose-6acf75b3c23999c5f99f8d5b#matte-glass-on-the-timeline">원문</a>)</figcaption></figure>
+
 ## 4. 머리글과 앱 바의 새틴 유리
 
 - **한 층 위로 올라가면, 일반 UI 크롬으로 쓰는 첫 유리인 새틴이 있다.**
@@ -122,6 +133,8 @@ Bluesky 앱 Heron을 혼자 만드는 저자는 앱 전체를 **"유리"라는 �
   - 그래서 새틴 유리는 **전부 Heron이 Compose로 직접** 그린다. 저자 표현으로 "꽤 많은 꾀를 써서". 그 대가로 두 플랫폼에서의 모습을 온전히 Heron이 정할 수 있다.
 - **원문의 실제 화면 두 장**: iPhone 18의 프로필 사진 모음 화면과 Pixel 10의 사진 위주 피드 화면이다. 두 화면 모두 위쪽 머리글 뒤로 사진들이 **흐릿하게 비치며** 지나가고, 머리글 아래 경계는 선 없이 부드럽게 녹아든다.
 
+<figure class="media"><div class="media-row"><img src="https://storage.googleapis.com/tunji-web-public/articles/6acf75b3c23999c5f99f8d5b/satin-ios.png" alt="iPhone 18 프로필 사진 모음 화면의 새틴 유리 머리글" loading="lazy"><img src="https://storage.googleapis.com/tunji-web-public/articles/6acf75b3c23999c5f99f8d5b/satin-android.png" alt="Pixel 10 라이트 모드 사진 피드 화면의 새틴 유리 머리글" loading="lazy"></div><figcaption>왼쪽은 iPhone 18의 프로필 사진 모음, 오른쪽은 Pixel 10 라이트 모드의 사진 피드. 머리글 뒤로 사진이 흐리게 비친다. 원문 이미지, 원문 서버에서 불러옴 (<a href="https://www.tunjid.com/articles/material-is-the-metaphor-pushing-the-limits-of-building-with-material-design-cross-platform-with-jetpack-compose-6acf75b3c23999c5f99f8d5b#satin-glass-on-headers-and-app-bars">원문</a>)</figcaption></figure>
+
 ## 5. 탐색에는 플로트 유리
 
 - **탐색은 앱에서 가장 중요한 기능 중 하나다.**
@@ -130,6 +143,9 @@ Bluesky 앱 Heron을 혼자 만드는 저자는 앱 전체를 **"유리"라는 �
   - 그래서 저자는 Heron만의 재질을 정하지 않고, **각 플랫폼의 기본 부품을 그대로 쓴다.** 그러면 앱이 그 플랫폼의 앱처럼 느껴지고, 나머지 부분은 Heron다움을 지킨다.
 - **Heron이 "자기 플랫폼 앱처럼" 느껴지는지는 전부 이 결정에 달려 있다.**
   - iOS 사용자가 설정에서 liquid glass의 투명도를 바꾸면 Heron도 그대로 따라간다. 원문의 영상이 이 장면을 보여 준다(iOS 설정에서 투명도를 바꾸자 Heron의 탭 막대도 바뀐다).
+
+<figure class="media"><video src="https://tunjid.com/files/articles/6acf75b3c23999c5f99f8d5b/liquid-ios-settings.mp4" controls playsinline preload="metadata"></video><figcaption>iOS의 liquid glass를 Heron의 플로트 유리로 쓴 모습. 원문 영상(약 28MB), 원문 서버에서 불러옴 (<a href="https://www.tunjid.com/articles/material-is-the-metaphor-pushing-the-limits-of-building-with-material-design-cross-platform-with-jetpack-compose-6acf75b3c23999c5f99f8d5b#float-on-navigation">원문</a>)</figcaption></figure>
+
   - Material Design이 다음 판에서 하단 탐색 막대를 새로 디자인해도, 이전 판 때처럼 Heron 위에 문제없이 떠 있을 것이다.
 - **저자는 이것을 "플랫폼에 내는 세금"이라 부른다.**
   - 앱에서 **가장 자주 쓰는 UI 요소 하나의 디자인을 플랫폼에 넘겨주는 대신**, 나머지 브랜드 전부를 온전히 지킨다.
@@ -213,6 +229,8 @@ fun PolygonShape.animate(
 - **이 모양들은 상태를 가진다.**
   - 타임라인에서 프로필 화면으로 넘어갈 때, 공유 요소 전환 동안 사진이 **찌그러진 모양에서 둥근 원으로** 변형된다. 원문의 영상이 이 장면을 보여 준다. 위의 `animate()` 가 바로 이 일을 한다.
 
+<figure class="media"><video src="https://tunjid.com/files/articles/6acf75b3c23999c5f99f8d5b/avatar-morph-android.webm" controls playsinline preload="metadata"></video><figcaption>화면 전환 중 프로필 사진 모양이 변형되는 모습(Android). 원문 영상(약 16MB), 원문 서버에서 불러옴 (<a href="https://www.tunjid.com/articles/material-is-the-metaphor-pushing-the-limits-of-building-with-material-design-cross-platform-with-jetpack-compose-6acf75b3c23999c5f99f8d5b#timeline-dilation">원문</a>)</figcaption></figure>
+
 ### ③ 새틴에 깃털 달기 — 머리글 블러
 
 - **새틴 유리는 단연 가장 어려웠다.**
@@ -223,6 +241,8 @@ fun PolygonShape.animate(
     - Android에서는 Compose의 **점진적 블러 API**를, iOS에서는 그 블러를 **Skia로 옮긴 Heron의 구현**(#1710)을 쓴다.
     - 여기에 머리글이 덮을 스크롤 내용 위로 **어두운 스크림**을 깐다.
     - 블러의 세기와 높이는 **스냅샷 상태를 읽는 람다**로 넘긴다. 그래서 블러가 **스크롤 위치에 따라** 매 프레임 바뀌고, 마치 머리글이 그 아래 내용을 흐리게 하는 것처럼 보인다.
+
+<figure class="media"><video src="https://tunjid.com/files/articles/6acf75b3c23999c5f99f8d5b/satin-android-large.webm" controls playsinline preload="metadata"></video><figcaption>Pixel 10 Pro Fold에서 스크롤에 따라 바뀌는 새틴 유리. 원문 영상(약 2MB), 원문 서버에서 불러옴 (<a href="https://www.tunjid.com/articles/material-is-the-metaphor-pushing-the-limits-of-building-with-material-design-cross-platform-with-jetpack-compose-6acf75b3c23999c5f99f8d5b#feathering-satin">원문</a>)</figcaption></figure>
 
 아래는 머리글 블러의 핵심이다. 세기를 정하는 지점(stop)을 세 개 찍는다.
 
@@ -327,6 +347,8 @@ internal actual fun verticalProgressiveBlurEffect(
     - 가려지지 않으면: 평소대로 둔다. 유리의 착시가 깨지지 않기 때문이다.
   - 원문의 영상은 Android에서 이 처리가 들어간 전환을 보여 준다. 앞의 `PaneHeaderState` 에 `top`(머리글 뒤 띠가 시작하는 위치)을 따로 두고 "공유 요소가 머리글에 가려지는지 확인하는 데 쓴다"고 주석을 단 것이 이 판단을 위한 것이다.
 
+<figure class="media"><video src="https://tunjid.com/files/articles/6acf75b3c23999c5f99f8d5b/satin-android-occlusion.webm" controls playsinline preload="metadata"></video><figcaption>공유 요소 전환 중의 새틴 유리(Android). 뒤로 돌아올 때 블러가 서서히 들어온다. 원문 영상(약 4MB), 원문 서버에서 불러옴 (<a href="https://www.tunjid.com/articles/material-is-the-metaphor-pushing-the-limits-of-building-with-material-design-cross-platform-with-jetpack-compose-6acf75b3c23999c5f99f8d5b#feathering-satin">원문</a>)</figcaption></figure>
+
 <figure><a class="figure-scroll" href="../assets/749-heron-satin-transition.svg"><img src="../assets/749-heron-satin-transition.svg" alt="공유 요소 전환이 시작되면 방향을 본다. 앞으로 가면 아무것도 하지 않는다. 뒤로 가면 새틴 유리에 가려지는지 보고, 가려지지 않으면 평소대로, 가려지면 전환 동안 스크림만 그리다가 전환이 끝난 뒤 800밀리초에 걸쳐 블러를 켠다" loading="lazy"></a><figcaption>공유 요소 전환 중 새틴 유리를 다루는 순서. 원문의 설명을 바탕으로 그림 (<a href="https://www.tunjid.com/articles/material-is-the-metaphor-pushing-the-limits-of-building-with-material-design-cross-platform-with-jetpack-compose-6acf75b3c23999c5f99f8d5b#feathering-satin">원문</a>)</figcaption></figure>
 
 - **아직 못 푼 것이 하나 있다: iOS에서 영상 위의 새틴 효과.**
@@ -395,6 +417,9 @@ UIKitView(
 - **그런데 이 "고장"이 Compose 세계에서는 오히려 기능이었다.**
   - "전환 중에 오버레이에 있다"는 것은 **Compose가 공유 요소를 다루는 방식과 똑같다.** 공유 요소도 전환 중에는 오버레이로 올라가기 때문이다.
   - 그래서 공유 요소 API로 두 화면 사이의 탭 막대 위치·크기만 맞춰 주면, 탭 막대는 **늘 플랫폼 오버레이에 있으니** 추가 작업 없이 그냥 동작했다. 원문의 영상이 iOS에서 liquid glass 탭 막대가 화면 전환을 따라 움직이는 모습을 보여 준다.
+
+<figure class="media"><video src="https://tunjid.com/files/articles/6acf75b3c23999c5f99f8d5b/liquid-glass-shared-elements.mp4" controls playsinline preload="metadata"></video><figcaption>iOS에서 liquid glass 탭 막대가 공유 요소 전환을 따라가는 모습. 원문 영상(약 20MB), 원문 서버에서 불러옴 (<a href="https://www.tunjid.com/articles/material-is-the-metaphor-pushing-the-limits-of-building-with-material-design-cross-platform-with-jetpack-compose-6acf75b3c23999c5f99f8d5b#frosting-over">원문</a>)</figcaption></figure>
+
   - Heron 코드에는 이를 위한 작은 처리가 하나 있다. 탭 막대에 `sharedElement` 를 붙이되, "Compose 그리기 층과 공유 요소 오버레이 규칙이 UIKit 오버레이에는 먹히지 않으니 **두 번 그려지지 않게**" 전환 중 한쪽을 숨긴다는 주석과 함께 `visible(isActive || !isTransitionActive)` 를 둔다.
 
 ## 7. 정리 — Material은 여전히 버틴다

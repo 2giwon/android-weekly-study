@@ -369,6 +369,26 @@ main,
   height: auto;
 }
 
+/* 원문 스크린샷·영상: 세로로 긴 폰 화면이라 도표와 달리 줄여서 나란히 놓는다 */
+.media-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  align-items: start;
+}
+
+.prose figure.media img,
+.prose figure.media video {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  max-height: 70vh;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+  background: var(--sheet);
+}
+
 .prose figcaption {
   margin-top: 8px;
   font-size: 14px;
