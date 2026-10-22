@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 470" role="img" aria-labelledby="t d">
+  <title id="t">공유 요소 전환 중 새틴 유리 다루기</title>
+  <desc id="d">공유 요소 전환이 시작되면 먼저 방향을 본다. 앞으로 가는 전환이면 아무것도 하지 않는다. 뒤로 가는 전환이면 공유 요소가 새틴 유리 머리글에 가려지는지 본다. 가려지지 않으면 평소대로 그린다. 가려지면 전환 동안에는 어두운 막(scrim)만 그리고 블러는 끈다. 전환이 끝나면 블러를 800밀리초에 걸쳐 서서히 켠다. 이렇게 해야 전환이 끝나는 순간 흐려진 모습이 갑자기 튀어나오는 것이 눈에 띄지 않는다.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" class="head"/>
+    </marker>
+    <linearGradient id="fadein" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0" class="g0"/>
+      <stop offset="1" class="g1"/>
+    </linearGradient>
+  </defs>
+  <style>
+    text { font-family: 'IBM Plex Sans KR', 'Apple SD Gothic Neo', system-ui, sans-serif; fill: #1b2733; }
+    .soft { fill: #4a5866; }
+    .title { font-weight: 700; }
+    .line { stroke: #6b7885; stroke-width: 2.2; fill: none; }
+    .head { fill: #6b7885; }
+    .start { fill: #e3ecf5; stroke: #2f5d8a; stroke-width: 2; }
+    .ask { fill: #fff6e0; stroke: #b5852a; stroke-width: 2; }
+    .plain { fill: #f3f5f7; stroke: #8a949e; stroke-width: 2; }
+    .act { fill: #eee8fa; stroke: #7a5fb8; stroke-width: 2.2; }
+    .scrim { fill: #4a5866; }
+    .g0 { stop-color: #eee8fa; }
+    .g1 { stop-color: #7a5fb8; }
+    .axis { stroke: #6b7885; stroke-width: 1.5; }
+    @media (prefers-color-scheme: dark) {
+      text { fill: #e4e9ee; }
+      .soft { fill: #9fadba; }
+      .line { stroke: #8795a3; }
+      .head { fill: #8795a3; }
+      .start { fill: #1b2a3a; stroke: #7fb0dd; }
+      .ask { fill: #33291a; stroke: #e0b860; }
+      .plain { fill: #1a232c; stroke: #75808b; }
+      .act { fill: #241f36; stroke: #b49cf0; }
+      .scrim { fill: #9fadba; }
+      .g0 { stop-color: #241f36; }
+      .g1 { stop-color: #b49cf0; }
+      .axis { stroke: #8795a3; }
+    }
+  </style>
+
+  <!-- 시작 -->
+  <rect class="start" x="20" y="40" width="180" height="70" rx="10"/>
+  <text class="title" x="110" y="70" font-size="15" text-anchor="middle">공유 요소 전환</text>
+  <text class="soft" x="110" y="93" font-size="12" text-anchor="middle">예: 목록 → 프로필</text>
+
+  <path class="line" d="M200 75 H248" marker-end="url(#arrow)"/>
+
+  <!-- 방향 -->
+  <rect class="ask" x="250" y="40" width="170" height="70" rx="10"/>
+  <text class="title" x="335" y="70" font-size="15" text-anchor="middle">어느 방향?</text>
+  <text class="soft" x="335" y="93" font-size="12" text-anchor="middle">앞으로 / 뒤로</text>
+
+  <path class="line" d="M420 60 H508" marker-end="url(#arrow)"/>
+  <text class="soft" x="462" y="50" font-size="12" text-anchor="middle">앞으로</text>
+  <rect class="plain" x="510" y="25" width="250" height="60" rx="10"/>
+  <text x="526" y="51" font-size="14">아무것도 하지 않는다</text>
+  <text class="soft" x="526" y="72" font-size="12">튀어나오는 정도가 작아 눈에 안 띈다</text>
+
+  <path class="line" d="M335 110 V160" marker-end="url(#arrow)"/>
+  <text class="soft" x="345" y="140" font-size="12">뒤로</text>
+
+  <!-- 가려지나 -->
+  <rect class="ask" x="230" y="162" width="210" height="76" rx="10"/>
+  <text class="title" x="335" y="192" font-size="15" text-anchor="middle">새틴 유리에</text>
+  <text class="title" x="335" y="214" font-size="15" text-anchor="middle">가려지나?</text>
+
+  <path class="line" d="M440 185 H508" marker-end="url(#arrow)"/>
+  <text class="soft" x="472" y="175" font-size="12" text-anchor="middle">아니오</text>
+  <rect class="plain" x="510" y="152" width="250" height="60" rx="10"/>
+  <text x="526" y="178" font-size="14">평소대로 그린다</text>
+  <text class="soft" x="526" y="199" font-size="12">유리의 착시가 깨지지 않는다</text>
+
+  <path class="line" d="M335 238 V290" marker-end="url(#arrow)"/>
+  <text class="soft" x="345" y="268" font-size="12">예</text>
+
+  <!-- 처리 -->
+  <rect class="act" x="40" y="292" width="920" height="160" rx="12"/>
+  <text class="title" x="62" y="322" font-size="15">가려질 때: 블러를 잠시 끄고, 끝난 뒤 천천히 켠다</text>
+
+  <line class="axis" x1="80" y1="420" x2="920" y2="420"/>
+  <line class="axis" x1="80" y1="412" x2="80" y2="428"/>
+  <line class="axis" x1="520" y1="412" x2="520" y2="428"/>
+  <line class="axis" x1="880" y1="412" x2="880" y2="428"/>
+  <text class="soft" x="80" y="444" font-size="12" text-anchor="middle">전환 시작</text>
+  <text class="soft" x="520" y="444" font-size="12" text-anchor="middle">전환 끝</text>
+  <text class="soft" x="880" y="444" font-size="12" text-anchor="middle">+800ms</text>
+
+  <rect class="scrim" x="80" y="350" width="440" height="22" rx="4" opacity="0.55"/>
+  <text x="300" y="391" font-size="13" text-anchor="middle">어두운 막(scrim)만 그린다 — 블러 0</text>
+
+  <rect x="520" y="350" width="360" height="22" rx="4" fill="url(#fadein)"/>
+  <text x="700" y="391" font-size="13" text-anchor="middle">블러를 0에서 원래 세기까지 서서히 올린다</text>
+</svg>

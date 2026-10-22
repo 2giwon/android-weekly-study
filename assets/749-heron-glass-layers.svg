@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" role="img" aria-labelledby="t d">
+  <title id="t">Heron의 세 가지 유리 층</title>
+  <desc id="d">왼쪽은 Heron 홈 화면의 뼈대 그림이다. 타임라인 카드들이 화면 전체를 채우고(무광 유리), 위쪽의 카테고리 탭 머리글이 아래 내용을 반쯤 가리며(새틴 유리), 아래쪽의 탭 막대와 글쓰기 버튼이 모든 것 위에 떠 있다(플로트 유리). 오른쪽은 같은 세 층을 옆에서 본 단면이다. 가장 아래가 무광 유리, 가운데가 새틴 유리, 가장 위가 플로트 유리다. 무광과 새틴은 Heron이 Compose로 직접 그려 두 플랫폼에서 똑같고, 플로트는 각 플랫폼의 기본 부품을 그대로 쓴다.</desc>
+  <style>
+    text { font-family: 'IBM Plex Sans KR', 'Apple SD Gothic Neo', system-ui, sans-serif; fill: #1b2733; }
+    .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+    .soft { fill: #4a5866; }
+    .title { font-weight: 700; }
+    .phone { fill: #f4f5fa; stroke: #8a949e; stroke-width: 2; }
+    .card { fill: #ffffff; stroke: #d5dae2; stroke-width: 1.2; }
+    .bar { fill: #c9ced6; }
+    .media { fill: #b9cbe4; }
+    .avatar { fill: #dbe5f5; }
+    .satin { fill: #e9e3f7; fill-opacity: 0.82; stroke: #7a5fb8; stroke-width: 2; stroke-dasharray: 6 4; }
+    .chip { fill: #d6e4fb; }
+    .float { fill: #ffffff; stroke: #2e7d6b; stroke-width: 2.5; }
+    .fab { fill: #d6e4fb; stroke: #2e7d6b; stroke-width: 2.5; }
+    .matte-tag { fill: #2f5d8a; }
+    .satin-tag { fill: #7a5fb8; }
+    .float-tag { fill: #2e7d6b; }
+    .tag-text { fill: #ffffff; font-weight: 700; }
+    .layer-matte { fill: #e3ecf5; stroke: #2f5d8a; stroke-width: 2; }
+    .layer-satin { fill: #eee8fa; stroke: #7a5fb8; stroke-width: 2; }
+    .layer-float { fill: #e1f2ec; stroke: #2e7d6b; stroke-width: 2; }
+    .line { stroke: #6b7885; stroke-width: 1.5; fill: none; stroke-dasharray: 3 3; }
+    @media (prefers-color-scheme: dark) {
+      text { fill: #e4e9ee; }
+      .soft { fill: #9fadba; }
+      .phone { fill: #11161c; stroke: #75808b; }
+      .card { fill: #1c242d; stroke: #2f3a46; }
+      .bar { fill: #3a4552; }
+      .media { fill: #2f4a6b; }
+      .avatar { fill: #2a3a52; }
+      .satin { fill: #2a2340; fill-opacity: 0.82; stroke: #b49cf0; }
+      .chip { fill: #2a3a52; }
+      .float { fill: #1c242d; stroke: #6cc4ad; }
+      .fab { fill: #2a3a52; stroke: #6cc4ad; }
+      .matte-tag { fill: #7fb0dd; }
+      .satin-tag { fill: #b49cf0; }
+      .float-tag { fill: #6cc4ad; }
+      .tag-text { fill: #11161c; }
+      .layer-matte { fill: #1b2a3a; stroke: #7fb0dd; }
+      .layer-satin { fill: #241f36; stroke: #b49cf0; }
+      .layer-float { fill: #15302a; stroke: #6cc4ad; }
+      .line { stroke: #8795a3; }
+    }
+  </style>
+
+  <!-- 왼쪽: 화면 뼈대 -->
+  <text class="title" x="170" y="30" font-size="16" text-anchor="middle">위에서 본 화면</text>
+  <rect class="phone" x="40" y="45" width="260" height="535" rx="28"/>
+
+  <!-- 무광 유리: 타임라인 카드 -->
+  <g>
+    <rect class="card" x="52" y="118" width="236" height="120" rx="10"/>
+    <circle class="avatar" cx="74" cy="140" r="12"/>
+    <rect class="bar" x="94" y="132" width="110" height="7" rx="3"/>
+    <rect class="bar" x="94" y="145" width="70" height="6" rx="3"/>
+    <rect class="bar" x="64" y="162" width="212" height="6" rx="3"/>
+    <rect class="media" x="64" y="176" width="212" height="52" rx="6"/>
+
+    <rect class="card" x="52" y="248" width="236" height="62" rx="10"/>
+    <circle class="avatar" cx="74" cy="270" r="12"/>
+    <rect class="bar" x="94" y="262" width="80" height="7" rx="3"/>
+    <rect class="bar" x="64" y="292" width="212" height="6" rx="3"/>
+
+    <rect class="card" x="52" y="320" width="236" height="120" rx="10"/>
+    <circle class="avatar" cx="74" cy="342" r="12"/>
+    <rect class="bar" x="94" y="334" width="96" height="7" rx="3"/>
+    <rect class="bar" x="64" y="364" width="212" height="6" rx="3"/>
+    <rect class="media" x="64" y="378" width="212" height="52" rx="6"/>
+
+    <rect class="card" x="52" y="450" width="236" height="120" rx="10"/>
+    <circle class="avatar" cx="74" cy="472" r="12"/>
+    <rect class="bar" x="94" y="464" width="100" height="7" rx="3"/>
+    <rect class="media" x="64" y="494" width="212" height="52" rx="6"/>
+  </g>
+
+  <!-- 새틴 유리: 머리글 -->
+  <rect class="satin" x="40" y="45" width="260" height="88" rx="28"/>
+  <text class="title" x="62" y="80" font-size="15">Home</text>
+  <rect class="chip" x="58" y="98" width="76" height="24" rx="12"/>
+  <text x="96" y="115" font-size="11" text-anchor="middle">Following</text>
+  <text class="soft" x="170" y="115" font-size="11" text-anchor="middle">Discover</text>
+  <text class="soft" x="226" y="115" font-size="11" text-anchor="middle">Feeds</text>
+
+  <!-- 플로트 유리: 탭 막대와 버튼 -->
+  <rect class="float" x="54" y="520" width="168" height="44" rx="22"/>
+  <circle class="chip" cx="82" cy="542" r="14"/>
+  <circle class="bar" cx="122" cy="542" r="7"/>
+  <circle class="bar" cx="158" cy="542" r="7"/>
+  <circle class="bar" cx="194" cy="542" r="7"/>
+  <circle class="fab" cx="262" cy="542" r="24"/>
+  <text x="262" y="548" font-size="16" text-anchor="middle">✎</text>
+
+  <!-- 왼쪽 꼬리표 -->
+  <rect class="satin-tag" x="312" y="76" width="84" height="26" rx="13"/>
+  <text class="tag-text" x="354" y="94" font-size="13" text-anchor="middle">새틴 유리</text>
+  <path class="line" d="M300 89 H312"/>
+
+  <rect class="matte-tag" x="312" y="300" width="84" height="26" rx="13"/>
+  <text class="tag-text" x="354" y="318" font-size="13" text-anchor="middle">무광 유리</text>
+  <path class="line" d="M288 313 H312"/>
+
+  <rect class="float-tag" x="312" y="529" width="84" height="26" rx="13"/>
+  <text class="tag-text" x="354" y="547" font-size="13" text-anchor="middle">플로트 유리</text>
+  <path class="line" d="M286 542 H312"/>
+
+  <!-- 오른쪽: 옆에서 본 단면 -->
+  <text class="title" x="700" y="30" font-size="16" text-anchor="middle">옆에서 본 층 — 위로 갈수록 높이 떠 있다</text>
+
+  <rect class="layer-float" x="440" y="55" width="520" height="150" rx="12"/>
+  <text class="title" x="462" y="86" font-size="16">플로트 유리 (Float) — 가장 위</text>
+  <text x="462" y="114" font-size="13">탭 막대·글쓰기 버튼. 다른 모든 것 위에 떠 있다.</text>
+  <text x="462" y="138" font-size="13">각 플랫폼의 기본 부품을 그대로 쓴다.</text>
+  <text class="soft" x="462" y="164" font-size="12">Android: Material 3 탭 막대 · iOS: UITabBar의 liquid glass</text>
+  <text class="soft" x="462" y="186" font-size="12">→ 두 플랫폼에서 모양이 다르다 (일부러)</text>
+
+  <rect class="layer-satin" x="440" y="225" width="520" height="150" rx="12"/>
+  <text class="title" x="462" y="256" font-size="16">새틴 유리 (Satin) — 가운데</text>
+  <text x="462" y="284" font-size="13">머리글·앱 바. 반투명이라 아래 내용이 흐리게 비친다.</text>
+  <text x="462" y="308" font-size="13">Heron이 Compose로 직접 그린다.</text>
+  <text class="soft" x="462" y="334" font-size="12">아래로 갈수록 약해지는 블러 + 어두운 막(scrim)</text>
+  <text class="soft" x="462" y="356" font-size="12">→ 두 플랫폼에서 똑같이 보인다</text>
+
+  <rect class="layer-matte" x="440" y="395" width="520" height="150" rx="12"/>
+  <text class="title" x="462" y="426" font-size="16">무광 유리 (Matte) — 가장 아래</text>
+  <text x="462" y="454" font-size="13">타임라인 글 하나하나가 놓인 카드. 불투명하고 반짝임이 없다.</text>
+  <text x="462" y="478" font-size="13">앱의 대부분을 차지하는 바탕 층이다.</text>
+  <text class="soft" x="462" y="504" font-size="12">Material 3 ElevatedCard 그대로</text>
+  <text class="soft" x="462" y="526" font-size="12">→ 두 플랫폼에서 똑같이 보인다</text>
+
+  <text class="soft" x="700" y="580" font-size="12" text-anchor="middle">무광·새틴은 Heron의 브랜드, 플로트는 플랫폼에 내는 "세금"이다.</text>
+</svg>
