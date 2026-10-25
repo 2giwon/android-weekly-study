@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 560" role="img" aria-labelledby="t d">
+  <title id="t">ASM으로 감시 코드를 넣는 두 단계</title>
+  <desc id="d">debug용 Kotlin·Java 컴파일이 끝나면 두 단계 작업이 이어서 돈다. 1단계는 컴파일된 class 파일을 읽어 @ComposableMonitor가 붙은 함수마다 지역 변수의 이름, 타입, 슬롯 번호, State인지 여부, 마지막으로 저장되는 줄을 JSON 파일로 남긴다. 2단계는 그 JSON을 읽어 바이트코드를 고친다. 함수에 들어갈 때 목록을 하나 만들고 파라미터를 모두 넣고, State 지역 변수가 저장될 때마다 그 값을 넣고, 함수가 끝나는 모든 곳 직전에 CollectAndPrintValues를 부른다. 앱이 실행되면 런타임 라이브러리가 State를 풀어 값을 꺼내고, 이전 값과 비교해 바뀐 것을 로그로 찍는다.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" class="head"/>
+    </marker>
+  </defs>
+  <style>
+    text { font-family: 'IBM Plex Sans KR', 'Apple SD Gothic Neo', system-ui, sans-serif; fill: #1b2733; }
+    .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+    .soft { fill: #4a5866; }
+    .title { font-weight: 700; }
+    .line { stroke: #6b7885; stroke-width: 2.2; fill: none; }
+    .head { fill: #6b7885; }
+    .start { fill: #f3f5f7; stroke: #8a949e; stroke-width: 2; }
+    .pass1 { fill: #e3ecf5; stroke: #2f5d8a; stroke-width: 2; }
+    .pass2 { fill: #eee8fa; stroke: #7a5fb8; stroke-width: 2; }
+    .run { fill: #e1f2ec; stroke: #2e7d6b; stroke-width: 2; }
+    .file { fill: #fff6e0; stroke: #b5852a; stroke-width: 1.8; }
+    .tag1 { fill: #2f5d8a; } .tag2 { fill: #7a5fb8; } .tag3 { fill: #2e7d6b; }
+    .tag-text { fill: #ffffff; font-weight: 700; }
+    @media (prefers-color-scheme: dark) {
+      text { fill: #e4e9ee; }
+      .soft { fill: #9fadba; }
+      .line { stroke: #8795a3; }
+      .head { fill: #8795a3; }
+      .start { fill: #1a232c; stroke: #75808b; }
+      .pass1 { fill: #1b2a3a; stroke: #7fb0dd; }
+      .pass2 { fill: #241f36; stroke: #b49cf0; }
+      .run { fill: #15302a; stroke: #6cc4ad; }
+      .file { fill: #33291a; stroke: #e0b860; }
+      .tag1 { fill: #7fb0dd; } .tag2 { fill: #b49cf0; } .tag3 { fill: #6cc4ad; }
+      .tag-text { fill: #11161c; }
+    }
+  </style>
+
+  <!-- 시작: 컴파일 -->
+  <rect class="start" x="250" y="16" width="500" height="58" rx="10"/>
+  <text class="title" x="500" y="41" font-size="15" text-anchor="middle">debug 컴파일이 끝난다</text>
+  <text class="soft mono" x="500" y="62" font-size="12" text-anchor="middle">compileDebugKotlin · compileDebugJavaWithJavac</text>
+  <path class="line" d="M500 74 V100" marker-end="url(#arrow)"/>
+  <text class="soft" x="512" y="92" font-size="12">끝나면 바로 이어서 (finalizedBy)</text>
+
+  <!-- 1단계 -->
+  <rect class="pass1" x="40" y="102" width="660" height="128" rx="12"/>
+  <rect class="tag1" x="58" y="116" width="70" height="24" rx="12"/>
+  <text class="tag-text" x="93" y="133" font-size="13" text-anchor="middle">1단계</text>
+  <text class="title" x="142" y="133" font-size="15">변수 위치 조사 — 고치지 않고 읽기만 한다</text>
+  <text x="62" y="162" font-size="13">컴파일된 class 파일을 읽고, @ComposableMonitor 가 붙은 함수마다</text>
+  <text x="62" y="185" font-size="13">모든 지역 변수의 이름 · 타입 · 슬롯 번호 · State 여부 ·</text>
+  <text x="62" y="208" font-size="13">마지막으로 값이 저장되는 줄 번호를 적어 둔다</text>
+
+  <rect class="file" x="730" y="128" width="230" height="76" rx="8"/>
+  <text class="title" x="845" y="156" font-size="14" text-anchor="middle">함수마다 JSON 한 개</text>
+  <text class="soft mono" x="845" y="182" font-size="11" text-anchor="middle">build/asm-analysis/</text>
+  <text class="soft mono" x="845" y="196" font-size="11" text-anchor="middle">&lt;클래스&gt;_&lt;함수&gt;.json</text>
+  <path class="line" d="M700 166 H728" marker-end="url(#arrow)"/>
+
+  <path class="line" d="M370 230 V262" marker-end="url(#arrow)"/>
+  <path class="line" d="M845 204 V290 H702" marker-end="url(#arrow)"/>
+  <text class="soft" x="790" y="280" font-size="12" text-anchor="middle">읽어 온다</text>
+
+  <!-- 2단계 -->
+  <rect class="pass2" x="40" y="264" width="660" height="150" rx="12"/>
+  <rect class="tag2" x="58" y="278" width="70" height="24" rx="12"/>
+  <text class="tag-text" x="93" y="295" font-size="13" text-anchor="middle">2단계</text>
+  <text class="title" x="142" y="295" font-size="15">감시 코드 끼워 넣기 — 바이트코드를 고친다</text>
+  <text x="62" y="324" font-size="13">• 함수에 들어올 때 (이름, 값) 목록을 하나 만들고 파라미터를 모두 넣는다</text>
+  <text x="62" y="348" font-size="13">• State 지역 변수가 저장된 바로 뒤에 그 변수를 목록에 넣는다</text>
+  <text x="62" y="372" font-size="13">• 함수가 끝나는 모든 곳 직전에 CollectAndPrintValues(…) 를 부른다</text>
+  <text class="soft" x="62" y="398" font-size="12">왜 두 번? ASM은 함수를 끝까지 훑어야 변수 목록과 스택 프레임 모양을 다 알 수 있다</text>
+
+  <path class="line" d="M370 414 V446" marker-end="url(#arrow)"/>
+  <text class="soft" x="382" y="436" font-size="12">앱을 실행하면</text>
+
+  <!-- 실행 -->
+  <rect class="run" x="40" y="448" width="660" height="96" rx="12"/>
+  <rect class="tag3" x="58" y="462" width="70" height="24" rx="12"/>
+  <text class="tag-text" x="93" y="479" font-size="13" text-anchor="middle">실행</text>
+  <text class="title" x="142" y="479" font-size="15">런타임 라이브러리가 비교하고 로그를 찍는다</text>
+  <text x="62" y="508" font-size="13">State 는 풀어서 값만 꺼내고, 이름 끝의 "$delegate" 를 떼어 낸다</text>
+  <text x="62" y="530" font-size="13">이전 값을 기억해 두었다가 비교해서, 바뀐 것만 Log.d("Inspector", …) 로 남긴다</text>
+
+  <text class="soft" x="845" y="480" font-size="12" text-anchor="middle">release 빌드에는</text>
+  <text class="soft" x="845" y="498" font-size="12" text-anchor="middle">이 두 단계가 돌지 않는다</text>
+</svg>
