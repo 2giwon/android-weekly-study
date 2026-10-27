@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 620" role="img" aria-labelledby="t d">
+  <title id="t">모양 토큰 하나를 두 플랫폼 코드로 만드는 흐름</title>
+  <desc id="d">공용 모듈의 XML 파일 하나에 모서리 모양을 역할 이름으로 적는다. Gradle 작업이 빌드할 때마다 이 파일을 읽어 Android용 Kotlin 클래스와 iOS용 Swift 구조체를 만든다. Android 쪽은 Compose의 RoundedCornerShape로, 윗모서리만 둥근 시트는 topStart와 topEnd로 바뀌고, Material 부품이 읽는 슬롯에 역할을 이어 주는 손으로 쓴 파일이 하나 남는다. iOS 쪽은 SwiftUI의 RoundedRectangle로, 시트는 UnevenRoundedRectangle로 바뀐다. 화면 코드는 양쪽 모두 AppTheme.shapes.card처럼 역할 이름만 부르고 숫자를 쓰지 않는다. Android는 Detekt의 금지 import 규칙이, iOS는 SwiftLint의 정규식 규칙이 모양을 직접 만드는 코드를 빌드 실패로 막는다. 다만 두 플랫폼이 같은 화면에 같은 역할을 골랐는지는 어떤 검사도 보지 못해 리뷰가 맡는다.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" class="head"/>
+    </marker>
+  </defs>
+  <style>
+    text { font-family: 'IBM Plex Sans KR', 'Apple SD Gothic Neo', system-ui, sans-serif; fill: #1b2733; }
+    .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+    .soft { fill: #4a5866; }
+    .title { font-weight: 700; }
+    .line { stroke: #6b7885; stroke-width: 2.2; fill: none; }
+    .dash { stroke: #b5852a; stroke-width: 2; fill: none; stroke-dasharray: 6 5; }
+    .head { fill: #6b7885; }
+    .src { fill: #fff6e0; stroke: #b5852a; stroke-width: 2; }
+    .task { fill: #f3f5f7; stroke: #8a949e; stroke-width: 2; }
+    .android { fill: #e1f2ec; stroke: #2e7d6b; stroke-width: 2; }
+    .ios { fill: #e3ecf5; stroke: #2f5d8a; stroke-width: 2; }
+    .guard { fill: #fbe9e7; stroke: #b4473a; stroke-width: 2; }
+    .gap { fill: #fffbf2; stroke: #b5852a; stroke-width: 2; stroke-dasharray: 6 5; }
+    .tagA { fill: #2e7d6b; } .tagI { fill: #2f5d8a; }
+    .tag-text { fill: #ffffff; font-weight: 700; }
+    @media (prefers-color-scheme: dark) {
+      text { fill: #e4e9ee; }
+      .soft { fill: #9fadba; }
+      .line { stroke: #8795a3; }
+      .head { fill: #8795a3; }
+      .dash { stroke: #e0b860; }
+      .gap { fill: #241f17; stroke: #e0b860; }
+      .src { fill: #33291a; stroke: #e0b860; }
+      .task { fill: #1a232c; stroke: #75808b; }
+      .android { fill: #15302a; stroke: #6cc4ad; }
+      .ios { fill: #1b2a3a; stroke: #7fb0dd; }
+      .guard { fill: #3a1d1a; stroke: #e58a7d; }
+      .tagA { fill: #6cc4ad; } .tagI { fill: #7fb0dd; }
+      .tag-text { fill: #11161c; }
+    }
+  </style>
+
+  <!-- 원본 XML -->
+  <rect class="src" x="270" y="14" width="460" height="92" rx="10"/>
+  <text class="title" x="500" y="40" font-size="15" text-anchor="middle">모양을 역할 이름으로 적은 XML 파일 하나</text>
+  <text class="soft mono" x="500" y="62" font-size="12" text-anchor="middle">core/ui/src/commonMain/design-tokens/</text>
+  <text class="mono" x="500" y="88" font-size="12" text-anchor="middle">field 12 · button 100 · card 16 · sheet 24(윗모서리만)</text>
+  <path class="line" d="M500 106 V132" marker-end="url(#arrow)"/>
+
+  <!-- Gradle 작업 -->
+  <rect class="task" x="300" y="134" width="400" height="66" rx="10"/>
+  <text class="title" x="500" y="160" font-size="15" text-anchor="middle">Gradle 작업이 빌드마다 읽어서 만든다</text>
+  <text class="soft" x="500" y="184" font-size="12" text-anchor="middle">Kotlin 컴파일과 iOS 프레임워크 묶기 전에 반드시 먼저 돈다</text>
+
+  <path class="line" d="M400 200 V226 H250 V246" marker-end="url(#arrow)"/>
+  <path class="line" d="M600 200 V226 H750 V246" marker-end="url(#arrow)"/>
+
+  <!-- Android -->
+  <rect class="android" x="30" y="248" width="440" height="160" rx="12"/>
+  <rect class="tagA" x="48" y="262" width="86" height="24" rx="12"/>
+  <text class="tag-text" x="91" y="279" font-size="13" text-anchor="middle">Android</text>
+  <text class="title" x="146" y="279" font-size="14">Kotlin 클래스 AppShapes (만들어진 파일)</text>
+  <text x="50" y="310" font-size="13">역할마다 Compose의 RoundedCornerShape 하나</text>
+  <text x="50" y="333" font-size="13">시트는 topStart · topEnd 에만 반지름</text>
+  <text x="50" y="364" font-size="13">손으로 쓰는 파일은 하나만 남는다:</text>
+  <text x="50" y="386" font-size="13">Material 부품이 읽는 슬롯에 역할을 이어 준다</text>
+
+  <!-- iOS -->
+  <rect class="ios" x="530" y="248" width="440" height="160" rx="12"/>
+  <rect class="tagI" x="548" y="262" width="56" height="24" rx="12"/>
+  <text class="tag-text" x="576" y="279" font-size="13" text-anchor="middle">iOS</text>
+  <text class="title" x="616" y="279" font-size="14">Swift 구조체 AppShapes (만들어진 파일)</text>
+  <text x="550" y="310" font-size="13">역할마다 SwiftUI의 RoundedRectangle 하나</text>
+  <text x="550" y="333" font-size="13">시트는 UnevenRoundedRectangle</text>
+  <text x="550" y="364" font-size="13">화면 코드는 양쪽 다 AppTheme.shapes.card 처럼</text>
+  <text x="550" y="386" font-size="13">역할 이름만 부르고 숫자를 쓰지 않는다</text>
+
+  <path class="line" d="M250 408 V438" marker-end="url(#arrow)"/>
+  <path class="line" d="M750 408 V438" marker-end="url(#arrow)"/>
+
+  <!-- 검사 -->
+  <rect class="guard" x="30" y="440" width="440" height="80" rx="12"/>
+  <text class="title" x="50" y="468" font-size="14">Detekt 금지 import 규칙</text>
+  <text x="50" y="494" font-size="13">테마 파일 밖에서 RoundedCornerShape 를 가져오면</text>
+  <text x="50" y="512" font-size="13">빌드 실패. 원 모양(CircleShape)은 허용</text>
+
+  <rect class="guard" x="530" y="440" width="440" height="80" rx="12"/>
+  <text class="title" x="550" y="468" font-size="14">SwiftLint 정규식 규칙</text>
+  <text x="550" y="494" font-size="13">막을 import 가 없어서 RoundedRectangle(cornerRadius</text>
+  <text x="550" y="512" font-size="13">같은 글자 모양을 찾아 오류로 만든다</text>
+
+  <!-- 빈틈 -->
+  <path class="dash" d="M250 520 V552"/>
+  <path class="dash" d="M750 520 V552"/>
+  <rect class="gap" x="150" y="552" width="700" height="56" rx="10"/>
+  <text class="title" x="500" y="576" font-size="14" text-anchor="middle">못 막는 것: 같은 화면에 두 플랫폼이 같은 역할을 골랐는가</text>
+  <text class="soft" x="500" y="597" font-size="12" text-anchor="middle">한쪽은 card, 다른 쪽은 dialog 여도 두 검사 모두 통과한다. 지금은 리뷰가 맡는다</text>
+</svg>
