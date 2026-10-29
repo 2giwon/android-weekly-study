@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 560" role="img" aria-labelledby="t d">
+  <title id="t">감독 에이전트가 요청을 전문 에이전트에게 넘기는 구조</title>
+  <desc id="d">사용자 요청은 먼저 감독 에이전트가 받는다. 감독은 요청을 보고 기기 전문 에이전트나 개인 기억 에이전트 중 하나에게 transfer_to_agent 도구로 일을 넘기고, 인사 같은 가벼운 말은 직접 답한다. transfer_to_agent 도구는 개발자가 쓰지 않고 subAgents 목록을 넘기면 ADK가 자동으로 만든다. 기기 전문 에이전트는 시각·배터리·팁 계산·온도 변환 도구를 가지고 Android API를 부르고, 개인 기억 에이전트는 메모 저장·메모 검색·리마인더 설정·리마인더 목록 도구를 가지고 Room SQLite를 읽고 쓴다. 세 에이전트는 같은 Gemma 모델 하나를 함께 쓰고, 각자 받는 도구 설명만 다르다.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" class="head"/>
+    </marker>
+  </defs>
+  <style>
+    text { font-family: 'IBM Plex Sans KR', 'Apple SD Gothic Neo', system-ui, sans-serif; fill: #1b2733; }
+    .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+    .soft { fill: #4a5866; }
+    .title { font-weight: 700; }
+    .line { stroke: #6b7885; stroke-width: 2.2; fill: none; }
+    .head { fill: #6b7885; }
+    .user { fill: #f3f5f7; stroke: #8a949e; stroke-width: 2; }
+    .sup { fill: #fff6e0; stroke: #b5852a; stroke-width: 2; }
+    .auto { fill: #fffbf2; stroke: #b5852a; stroke-width: 2; stroke-dasharray: 6 5; }
+    .dev { fill: #e3ecf5; stroke: #2f5d8a; stroke-width: 2; }
+    .mem { fill: #e1f2ec; stroke: #2e7d6b; stroke-width: 2; }
+    .sink { fill: #f3f5f7; stroke: #8a949e; stroke-width: 2; }
+    .label { fill: #8a5a12; font-weight: 700; }
+    @media (prefers-color-scheme: dark) {
+      text { fill: #e4e9ee; }
+      .soft { fill: #9fadba; }
+      .line { stroke: #8795a3; }
+      .head { fill: #8795a3; }
+      .user { fill: #1a232c; stroke: #75808b; }
+      .sup { fill: #33291a; stroke: #e0b860; }
+      .auto { fill: #241f17; stroke: #e0b860; }
+      .dev { fill: #1b2a3a; stroke: #7fb0dd; }
+      .mem { fill: #15302a; stroke: #6cc4ad; }
+      .sink { fill: #1a232c; stroke: #75808b; }
+      .label { fill: #e0b860; }
+    }
+  </style>
+
+  <!-- 사용자 -->
+  <rect class="user" x="330" y="14" width="340" height="54" rx="10"/>
+  <text class="title" x="500" y="38" font-size="15" text-anchor="middle">사용자 요청</text>
+  <text class="soft" x="500" y="58" font-size="12" text-anchor="middle">"배터리 확인하고 지금 몇 시인지 알려 줘"</text>
+  <path class="line" d="M500 68 V96" marker-end="url(#arrow)"/>
+
+  <!-- 감독 -->
+  <rect class="sup" x="250" y="98" width="500" height="92" rx="12"/>
+  <text class="title" x="500" y="124" font-size="15" text-anchor="middle">감독 에이전트 <tspan class="mono" font-size="13">supervisor_agent</tspan></text>
+  <text x="500" y="148" font-size="13" text-anchor="middle">요청을 보고 누구에게 넘길지 고른다</text>
+  <text class="soft" x="500" y="170" font-size="12" text-anchor="middle">인사나 가벼운 말은 넘기지 않고 직접 답한다</text>
+
+  <!-- 자동 도구 -->
+  <rect class="auto" x="770" y="98" width="214" height="92" rx="10"/>
+  <text class="title" x="877" y="122" font-size="13" text-anchor="middle">ADK가 만드는 도구</text>
+  <text class="mono" x="877" y="146" font-size="12" text-anchor="middle">transfer_to_agent</text>
+  <text class="mono" x="877" y="164" font-size="12" text-anchor="middle">(agent_name)</text>
+  <text class="soft" x="877" y="182" font-size="11" text-anchor="middle">subAgents 를 넘기면 생긴다</text>
+  <path class="line" d="M770 144 H752" stroke-dasharray="4 4"/>
+
+  <!-- 분기 -->
+  <path class="line" d="M400 190 V228 H250 V262" marker-end="url(#arrow)"/>
+  <path class="line" d="M600 190 V228 H750 V262" marker-end="url(#arrow)"/>
+  <text class="label mono" x="300" y="220" font-size="12" text-anchor="middle">transfer_to_agent</text>
+  <text class="label mono" x="700" y="220" font-size="12" text-anchor="middle">transfer_to_agent</text>
+
+  <!-- 기기 전문 -->
+  <rect class="dev" x="30" y="264" width="440" height="140" rx="12"/>
+  <text class="title" x="250" y="292" font-size="15" text-anchor="middle">기기 전문 에이전트 <tspan class="mono" font-size="13">device_agent</tspan></text>
+  <text x="50" y="322" font-size="13">도구: 기기 시각 · 배터리 상태</text>
+  <text x="50" y="344" font-size="13">+ KSP로 만든 팁 계산 · 온도 변환</text>
+  <text class="soft" x="50" y="376" font-size="12">자기 도구 설명만 받는다 — 메모·리마인더 도구는 모른다</text>
+
+  <!-- 기억 -->
+  <rect class="mem" x="530" y="264" width="440" height="140" rx="12"/>
+  <text class="title" x="750" y="292" font-size="15" text-anchor="middle">개인 기억 에이전트 <tspan class="mono" font-size="13">memory_agent</tspan></text>
+  <text x="550" y="322" font-size="13">도구: 메모 저장 · 메모 검색(RAG)</text>
+  <text x="550" y="344" font-size="13">+ 리마인더 설정 · 리마인더 목록</text>
+  <text class="soft" x="550" y="376" font-size="12">자기 도구 설명만 받는다 — 기기 도구는 모른다</text>
+
+  <path class="line" d="M250 404 V432" marker-end="url(#arrow)"/>
+  <path class="line" d="M750 404 V432" marker-end="url(#arrow)"/>
+
+  <rect class="sink" x="130" y="434" width="240" height="44" rx="10"/>
+  <text x="250" y="461" font-size="13" text-anchor="middle">Android API (BatteryManager 등)</text>
+  <rect class="sink" x="630" y="434" width="240" height="44" rx="10"/>
+  <text x="750" y="461" font-size="13" text-anchor="middle">Room SQLite (메모 · 리마인더)</text>
+
+  <text class="soft" x="500" y="514" font-size="12.5" text-anchor="middle">세 에이전트는 기기 안의 같은 Gemma 모델 하나(litertModel)를 함께 쓴다.</text>
+  <text class="soft" x="500" y="536" font-size="12.5" text-anchor="middle">달라지는 것은 모델에게 보여 주는 지시문과 도구 목록뿐이다.</text>
+</svg>
