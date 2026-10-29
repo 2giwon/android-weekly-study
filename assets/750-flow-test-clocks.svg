@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" role="img" aria-labelledby="t d">
+  <title id="t">코루틴 테스트 안의 두 시계와 소유 관계</title>
+  <desc id="d">왼쪽은 runTest 안에서 누가 누구를 쓰는지 보여 준다. 스코프는 작업이 얼마나 살아 있을지 정하고 디스패처를 쓴다. 디스패처는 일을 스케줄러에 올린다. 스케줄러는 대기열과 가상 시계를 가지고, TimeSource는 그 시계를 읽는 방법이다. 오른쪽 위는 가상 시계 쪽이다. delay, advanceTimeBy, advanceUntilIdle, runCurrent, testScheduler.timeSource가 여기에 속하고 실제 시간은 거의 흐르지 않는다. 오른쪽 아래는 실제 시계 쪽이다. Thread.sleep, System.currentTimeMillis, Instant.now, Dispatchers.IO와 Default 위의 작업, Turbine awaitItem의 3초 대기, runTest의 타임아웃이 여기에 속한다. 진짜 디스패처에 올린 일은 가상 시계를 밀어도 끝나지 않는다.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" class="head"/>
+    </marker>
+  </defs>
+  <style>
+    text { font-family: 'IBM Plex Sans KR', 'Apple SD Gothic Neo', system-ui, sans-serif; fill: #1b2733; }
+    .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+    .soft { fill: #4a5866; }
+    .title { font-weight: 700; }
+    .line { stroke: #6b7885; stroke-width: 2.2; fill: none; }
+    .dash { stroke: #b4473a; stroke-width: 2; fill: none; stroke-dasharray: 6 5; }
+    .head { fill: #6b7885; }
+    .frame { fill: none; stroke: #a3adb7; stroke-width: 1.5; stroke-dasharray: 5 5; }
+    .own { fill: #fff6e0; stroke: #b5852a; stroke-width: 2; }
+    .virt { fill: #e1f2ec; stroke: #2e7d6b; stroke-width: 2; }
+    .real { fill: #fbe9e7; stroke: #b4473a; stroke-width: 2; }
+    .vlabel { fill: #2e7d6b; font-weight: 700; }
+    .rlabel { fill: #b4473a; font-weight: 700; }
+    @media (prefers-color-scheme: dark) {
+      text { fill: #e4e9ee; }
+      .soft { fill: #9fadba; }
+      .line { stroke: #8795a3; }
+      .head { fill: #8795a3; }
+      .frame { stroke: #5b6773; }
+      .own { fill: #33291a; stroke: #e0b860; }
+      .virt { fill: #15302a; stroke: #6cc4ad; }
+      .real { fill: #3a1d1a; stroke: #e58a7d; }
+      .dash { stroke: #e58a7d; }
+      .vlabel { fill: #6cc4ad; }
+      .rlabel { fill: #e58a7d; }
+    }
+  </style>
+
+  <!-- 왼쪽: 소유 관계 -->
+  <rect class="frame" x="16" y="14" width="420" height="572" rx="12"/>
+  <text class="title" x="226" y="42" font-size="15" text-anchor="middle">runTest 안에서 누가 누구를 쓰나</text>
+
+  <rect class="own" x="46" y="64" width="360" height="86" rx="10"/>
+  <text class="title" x="226" y="92" font-size="15" text-anchor="middle">스코프 <tspan class="mono" font-size="13">CoroutineScope</tspan></text>
+  <text x="226" y="116" font-size="13" text-anchor="middle">작업이 얼마나 오래 살아 있을지 정한다</text>
+  <text class="soft" x="226" y="137" font-size="12" text-anchor="middle">cancel() 하면 그 아래 작업이 모두 멈춘다</text>
+  <path class="line" d="M226 150 V184" marker-end="url(#arrow)"/>
+
+  <rect class="own" x="46" y="186" width="360" height="86" rx="10"/>
+  <text class="title" x="226" y="214" font-size="15" text-anchor="middle">디스패처 <tspan class="mono" font-size="13">CoroutineDispatcher</tspan></text>
+  <text x="226" y="238" font-size="13" text-anchor="middle">일을 어느 스레드에서 돌릴지 정해 올린다</text>
+  <text class="soft mono" x="226" y="259" font-size="11.5" text-anchor="middle">StandardTestDispatcher(testScheduler)</text>
+  <path class="line" d="M226 272 V306" marker-end="url(#arrow)"/>
+
+  <rect class="own" x="46" y="308" width="360" height="100" rx="10"/>
+  <text class="title" x="226" y="336" font-size="15" text-anchor="middle">스케줄러 <tspan class="mono" font-size="13">testScheduler</tspan></text>
+  <text x="226" y="360" font-size="13" text-anchor="middle">할 일 대기열 + 가상 시계를 가진다</text>
+  <text class="soft" x="226" y="381" font-size="12" text-anchor="middle">runTest가 하나 만들고, 테스트 전체가 함께 써야 한다</text>
+  <text class="soft" x="226" y="398" font-size="12" text-anchor="middle">새로 만든 스케줄러는 runTest가 몰라서 영영 안 돈다</text>
+  <path class="line" d="M226 408 V442" marker-end="url(#arrow)"/>
+
+  <rect class="own" x="46" y="444" width="360" height="86" rx="10"/>
+  <text class="title" x="226" y="472" font-size="15" text-anchor="middle">시계 읽는 법 <tspan class="mono" font-size="13">TimeSource</tspan></text>
+  <text x="226" y="496" font-size="13" text-anchor="middle">코드가 "지금"을 이 시계로 읽게 주입한다</text>
+  <text class="soft mono" x="226" y="517" font-size="11.5" text-anchor="middle">testScheduler.timeSource</text>
+  <text class="soft" x="226" y="566" font-size="12" text-anchor="middle">위에서 아래로: 스코프 → 디스패처 → 스케줄러 → 시계</text>
+
+  <!-- 오른쪽 위: 가상 시계 -->
+  <rect class="virt" x="470" y="14" width="514" height="262" rx="12"/>
+  <text class="vlabel" x="494" y="44" font-size="15">가상 시계 — 테스트가 손으로 민다</text>
+  <text x="494" y="76" font-size="13"><tspan class="mono" font-size="12.5">delay(1000)</tspan>  가상 시계만 1초 건너뛴다</text>
+  <text x="494" y="104" font-size="13"><tspan class="mono" font-size="12.5">runCurrent()</tspan>  지금 시각에 잡힌 일만 돌린다</text>
+  <text x="494" y="132" font-size="13"><tspan class="mono" font-size="12.5">advanceTimeBy(t)</tspan>  t 직전까지의 일을 돌리고 시계를 민다</text>
+  <text x="494" y="160" font-size="13"><tspan class="mono" font-size="12.5">advanceUntilIdle()</tspan>  대기열이 빌 때까지 다 돌린다</text>
+  <text x="494" y="188" font-size="13"><tspan class="mono" font-size="12.5">testScheduler.timeSource</tspan>  가상 시계를 읽는다</text>
+  <text class="soft" x="494" y="224" font-size="12.5">가상 시간 1000ms가 흘러도 실제로는 거의 0ms가 걸린다.</text>
+  <text class="soft" x="494" y="246" font-size="12.5">같은 테스트를 몇 번 돌려도 일이 같은 순서로 돈다.</text>
+
+  <!-- 오른쪽 아래: 실제 시계 -->
+  <rect class="real" x="470" y="324" width="514" height="262" rx="12"/>
+  <text class="rlabel" x="494" y="354" font-size="15">실제 시계 — 테스트가 밀 수 없다</text>
+  <text x="494" y="386" font-size="13"><tspan class="mono" font-size="12.5">Thread.sleep()</tspan>  진짜로 기다리고 스레드도 막는다</text>
+  <text x="494" y="414" font-size="13"><tspan class="mono" font-size="12.5">currentTimeMillis() · Instant.now()</tspan>  진짜 시각</text>
+  <text x="494" y="442" font-size="13"><tspan class="mono" font-size="12.5">Dispatchers.IO · Default</tspan> 위의 작업  진짜 스레드</text>
+  <text x="494" y="470" font-size="13">Turbine <tspan class="mono" font-size="12.5">awaitItem()</tspan>  값이 올 때까지 진짜로 기다린다(기본 3초)</text>
+  <text x="494" y="498" font-size="13"><tspan class="mono" font-size="12.5">runTest</tspan> 의 제한 시간  진짜 시간으로 잰다</text>
+  <text class="soft" x="494" y="534" font-size="12.5">여기 있는 일은 advanceUntilIdle()을 불러도 끝나지 않는다.</text>
+  <text class="soft" x="494" y="556" font-size="12.5">돌 때마다 순서가 달라질 수 있다 — 깨지는 테스트의 가장 큰 원인.</text>
+
+  <!-- 연결 -->
+  <path class="line" d="M406 358 H466" marker-end="url(#arrow)"/>
+  <path class="dash" d="M727 276 V320" marker-end="url(#arrow)"/>
+  <text class="rlabel" x="740" y="304" font-size="12">진짜 디스패처를 넣으면 이쪽으로 샌다</text>
+</svg>
