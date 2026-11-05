@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 520" role="img" aria-labelledby="t d">
+  <title id="t">동기화 지점이 있을 때와 없을 때 Turbine이 보는 것</title>
+  <desc id="d">위 줄은 동기화 지점이 없는 경우다. refresh를 부르면 코루틴은 대기열에만 들어가고, 곧바로 부른 expectMostRecentItem은 아직 이전 값인 Idle을 돌려준다. Loaded는 그 뒤에야 버퍼에 들어온다. 아래 줄은 동기화 지점이 있는 경우다. refresh 뒤 expectNoEvents는 대기열에 남은 일이 아직 아무것도 내보내지 않았으므로 통과한다. runCurrent가 대기 중인 코루틴을 지금 돌리면 Loading과 Loaded가 버퍼에 들어오고, 그다음 expectMostRecentItem은 Loaded를 돌려준다. 두 함수 모두 기다리지 않고 이미 버퍼에 있는 것만 본다.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" class="head"/>
+    </marker>
+  </defs>
+  <style>
+    text { font-family: 'IBM Plex Sans KR', 'Apple SD Gothic Neo', system-ui, sans-serif; fill: #1b2733; }
+    .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+    .soft { fill: #4a5866; }
+    .title { font-weight: 700; }
+    .axis { stroke: #8a949e; stroke-width: 1.5; fill: none; }
+    .head { fill: #8a949e; }
+    .step { fill: #f7f9fa; stroke: #6b7885; stroke-width: 2; }
+    .sync { fill: #fff6e0; stroke: #b5852a; stroke-width: 2.4; }
+    .ok { fill: #e1f2ec; stroke: #2e7d6b; stroke-width: 2; }
+    .bad { fill: #fbe9e7; stroke: #b4473a; stroke-width: 2; }
+    .oklabel { fill: #2e7d6b; font-weight: 700; }
+    .badlabel { fill: #b4473a; font-weight: 700; }
+    .band { fill: #f3f5f7; }
+    @media (prefers-color-scheme: dark) {
+      text { fill: #e4e9ee; }
+      .soft { fill: #9fadba; }
+      .axis { stroke: #75808b; }
+      .head { fill: #75808b; }
+      .step { fill: #1a232c; stroke: #75808b; }
+      .sync { fill: #33291a; stroke: #e0b860; }
+      .ok { fill: #15302a; stroke: #6cc4ad; }
+      .bad { fill: #3a1d1a; stroke: #e58a7d; }
+      .oklabel { fill: #6cc4ad; }
+      .badlabel { fill: #e58a7d; }
+      .band { fill: #161d24; }
+    }
+  </style>
+
+  <!-- 위: 동기화 지점 없음 -->
+  <rect class="band" x="10" y="14" width="980" height="220" rx="10"/>
+  <text class="title badlabel" x="30" y="46" font-size="15">동기화 지점이 없을 때</text>
+  <path class="axis" d="M40 120 H960" marker-end="url(#arrow)"/>
+  <text class="soft" x="960" y="162" font-size="12" text-anchor="end">→ 테스트 코드가 실행되는 순서</text>
+
+  <rect class="step" x="50" y="82" width="200" height="56" rx="10"/>
+  <text class="mono" x="150" y="108" font-size="13.5" text-anchor="middle">vm.refresh()</text>
+  <text class="soft" x="150" y="127" font-size="12" text-anchor="middle">코루틴이 대기열에만 들어간다</text>
+
+  <rect class="bad" x="310" y="82" width="290" height="56" rx="10"/>
+  <text class="mono" x="455" y="108" font-size="13.5" text-anchor="middle">expectMostRecentItem()</text>
+  <text class="badlabel" x="455" y="127" font-size="12" text-anchor="middle">아직 Idle을 돌려준다</text>
+
+  <rect class="step" x="660" y="82" width="270" height="56" rx="10"/>
+  <text x="795" y="108" font-size="13.5" text-anchor="middle">Loading · Loaded 도착</text>
+  <text class="soft" x="795" y="127" font-size="12" text-anchor="middle">확인이 끝난 뒤라 소용없다</text>
+
+  <text class="soft" x="30" y="190" font-size="12.5">원문 실험: 이 순서에서는 거의 매번 예전 값이 나왔다. expectNoEvents()도 이벤트가 곧 오는데 매번 통과했다.</text>
+  <text class="soft" x="30" y="212" font-size="12.5">두 함수 모두 기다리지 않고, 이미 버퍼에 들어온 것만 보기 때문이다.</text>
+
+  <!-- 아래: 동기화 지점 있음 -->
+  <rect class="band" x="10" y="256" width="980" height="250" rx="10"/>
+  <text class="title oklabel" x="30" y="288" font-size="15">runCurrent()로 동기화 지점을 둘 때</text>
+  <path class="axis" d="M40 364 H960" marker-end="url(#arrow)"/>
+
+  <rect class="step" x="30" y="326" width="170" height="56" rx="10"/>
+  <text class="mono" x="115" y="352" font-size="13.5" text-anchor="middle">vm.refresh()</text>
+  <text class="soft" x="115" y="371" font-size="12" text-anchor="middle">대기열에 들어간다</text>
+
+  <rect class="ok" x="225" y="326" width="210" height="56" rx="10"/>
+  <text class="mono" x="330" y="352" font-size="13.5" text-anchor="middle">expectNoEvents()</text>
+  <text class="oklabel" x="330" y="371" font-size="12" text-anchor="middle">통과 — 아직 아무것도 안 돌았다</text>
+
+  <rect class="sync" x="460" y="326" width="200" height="56" rx="10"/>
+  <text class="mono title" x="560" y="352" font-size="13.5" text-anchor="middle">runCurrent()</text>
+  <text x="560" y="371" font-size="12" text-anchor="middle">지금 차례인 일을 돌린다</text>
+
+  <rect class="ok" x="685" y="326" width="285" height="56" rx="10"/>
+  <text class="mono" x="827" y="352" font-size="13.5" text-anchor="middle">expectMostRecentItem()</text>
+  <text class="oklabel" x="827" y="371" font-size="12" text-anchor="middle">Loaded를 돌려준다</text>
+
+  <text class="soft" x="560" y="412" font-size="12.5" text-anchor="middle">여기서 Loading과 Loaded가 버퍼에 들어온다. 가상 시계는 움직이지 않는다</text>
+  <text class="soft" x="30" y="456" font-size="12.5">원문 실험: 동기화 지점을 둔 뒤에는 모든 실행에서 결과가 같았다.</text>
+  <text class="soft" x="30" y="478" font-size="12.5">저장소가 delay를 쓰면 runCurrent()로는 Loaded까지 가지 못하므로 advanceUntilIdle()을 쓴다.</text>
+</svg>
