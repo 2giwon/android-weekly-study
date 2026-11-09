@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 300" role="img" aria-labelledby="t d">
+  <title id="t">yield로 나눈 긴 계산</title>
+  <desc id="d">웹의 UI 스레드 하나에서 긴 흐림 계산을 세 조각으로 나눈 모습이다. 첫 두 조각은 세 번째 틱 전에 끝나고, 조각 사이 yield 지점에서 프레임 작업이 차례를 받아 네 번째 틱에도 프레임이 표시된다. 마지막 조각은 그 프레임 작업 뒤에 이어서 돈다. 모든 틱에 프레임이 표시된다.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" class="head"/>
+    </marker>
+  </defs>
+  <style>
+    text { font-family: 'IBM Plex Sans KR', 'Apple SD Gothic Neo', system-ui, sans-serif; fill: #1b2733; }
+    .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+    .soft { fill: #4a5866; }
+    .title { font-weight: 700; }
+    .axis { stroke: #8a949e; stroke-width: 1.5; fill: none; }
+    .head { fill: #8a949e; }
+    .tick { stroke: #3b6ea8; stroke-width: 1.4; stroke-dasharray: 3 4; }
+    .ui { fill: #e1f2ec; stroke: #2e7d6b; stroke-width: 1.6; }
+    .work { fill: #e3edf9; stroke: #3b6ea8; stroke-width: 1.6; }
+    .yield { stroke: #b5852a; stroke-width: 3; }
+    .yieldlabel { fill: #8a6216; font-weight: 700; }
+    .oklabel { fill: #2e7d6b; font-weight: 700; }
+    .band { fill: #f3f5f7; }
+    @media (prefers-color-scheme: dark) {
+      text { fill: #e4e9ee; }
+      .soft { fill: #9fadba; }
+      .axis { stroke: #75808b; }
+      .head { fill: #75808b; }
+      .tick { stroke: #7fb0e6; }
+      .ui { fill: #15302a; stroke: #6cc4ad; }
+      .work { fill: #172638; stroke: #7fb0e6; }
+      .yield { stroke: #e0b860; }
+      .yieldlabel { fill: #e0b860; }
+      .oklabel { fill: #6cc4ad; }
+      .band { fill: #161d24; }
+    }
+  </style>
+
+  <rect class="band" x="10" y="14" width="980" height="272" rx="10"/>
+  <text class="title" x="30" y="44" font-size="15">웹: 긴 계산을 세 조각으로 나누고 사이에 yield()를 넣었을 때</text>
+  <text x="30" y="142" font-size="12.5">UI 스레드 하나</text>
+  <path class="axis" d="M200 138 H975" marker-end="url(#arrow)"/>
+  <line class="tick" x1="220" y1="100" x2="220" y2="160"/>
+  <line class="tick" x1="370" y1="100" x2="370" y2="160"/>
+  <line class="tick" x1="520" y1="100" x2="520" y2="160"/>
+  <line class="tick" x1="670" y1="100" x2="670" y2="160"/>
+  <line class="tick" x1="820" y1="100" x2="820" y2="160"/>
+  <line class="tick" x1="970" y1="100" x2="970" y2="160"/>
+
+  <rect class="ui" x="226" y="120" width="36" height="18" rx="4"/>
+  <rect class="work" x="266" y="120" width="40" height="18" rx="4"/>
+  <rect class="ui" x="376" y="120" width="48" height="18" rx="4"/>
+  <rect class="work" x="428" y="120" width="40" height="18" rx="4"/>
+
+  <rect class="ui" x="526" y="120" width="20" height="18" rx="4"/>
+  <rect class="work" x="550" y="120" width="50" height="18" rx="4"/>
+  <line class="yield" x1="603" y1="112" x2="603" y2="146"/>
+  <rect class="work" x="606" y="120" width="54" height="18" rx="4"/>
+  <line class="yield" x1="663" y1="112" x2="663" y2="146"/>
+  <rect class="ui" x="676" y="120" width="40" height="18" rx="4"/>
+  <rect class="work" x="720" y="120" width="60" height="18" rx="4"/>
+
+  <rect class="ui" x="826" y="120" width="56" height="18" rx="4"/>
+  <rect class="work" x="886" y="120" width="40" height="18" rx="4"/>
+
+  <text class="mono yieldlabel" x="633" y="92" font-size="12.5" text-anchor="middle">yield()</text>
+  <path class="axis" d="M620 96 L604 110" />
+  <path class="axis" d="M646 96 L662 110" />
+
+  <text class="oklabel" x="370" y="182" font-size="12.5" text-anchor="middle">표시</text>
+  <text class="oklabel" x="520" y="182" font-size="12.5" text-anchor="middle">표시</text>
+  <text class="oklabel" x="670" y="182" font-size="12.5" text-anchor="middle">표시</text>
+  <text class="oklabel" x="820" y="182" font-size="12.5" text-anchor="middle">표시</text>
+  <text class="oklabel" x="970" y="182" font-size="12.5" text-anchor="end">표시</text>
+
+  <text class="soft" x="30" y="226" font-size="12.5">세 번째 조각은 다음 프레임 작업(초록)에 차례를 넘긴 뒤 이어서 돈다. 계산 전체는 조금 늦게 끝나지만 놓치는 틱이 없다.</text>
+  <text class="soft" x="30" y="250" font-size="12.5">앞 그림의 "계산이 길 때(웹)"와 같은 양의 일을 한다. 달라진 것은 중간에 멈출 자리를 만든 것뿐이다.</text>
+</svg>

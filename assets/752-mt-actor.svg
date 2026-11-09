@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 400" role="img" aria-labelledby="t d">
+  <title id="t">UI 스레드와 Web Worker가 메시지만 주고받는 모습</title>
+  <desc id="d">왼쪽 UI 스레드와 오른쪽 Web Worker는 각자 자기 메모리를 가진다. 위쪽 화살표로 UI 스레드가 postMessage로 해독 요청(kind decode, id, hash, 크기)을 보내고, 아래쪽 화살표로 Web Worker가 postMessage로 결과(kind result, id, 픽셀 버퍼)를 돌려준다. 둘 사이에 같이 쓰는 메모리는 없다.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" class="msghead"/>
+    </marker>
+  </defs>
+  <style>
+    text { font-family: 'IBM Plex Sans KR', 'Apple SD Gothic Neo', system-ui, sans-serif; fill: #1b2733; }
+    .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+    .soft { fill: #4a5866; }
+    .title { font-weight: 700; }
+    .uibox { fill: #fbe9e7; stroke: #b4473a; stroke-width: 2; }
+    .wkbox { fill: #e3edf9; stroke: #3b6ea8; stroke-width: 2; }
+    .uilabel { fill: #b4473a; font-weight: 700; }
+    .wklabel { fill: #3b6ea8; font-weight: 700; }
+    .msg { stroke: #2e7d6b; stroke-width: 2.2; fill: none; }
+    .msghead { fill: #2e7d6b; }
+    .msglabel { fill: #2e7d6b; }
+    @media (prefers-color-scheme: dark) {
+      text { fill: #e4e9ee; }
+      .soft { fill: #9fadba; }
+      .uibox { fill: #3a1d1a; stroke: #e58a7d; }
+      .wkbox { fill: #172638; stroke: #7fb0e6; }
+      .uilabel { fill: #e58a7d; }
+      .wklabel { fill: #7fb0e6; }
+      .msg { stroke: #6cc4ad; }
+      .msghead { fill: #6cc4ad; }
+      .msglabel { fill: #6cc4ad; }
+    }
+  </style>
+
+  <path class="msg" d="M280 140 Q500 30 720 140" marker-end="url(#arrow)"/>
+  <text class="title msglabel" x="500" y="40" font-size="13" text-anchor="middle">요청 보내기</text>
+  <text class="mono msglabel" x="500" y="62" font-size="12.5" text-anchor="middle">postMessage({ kind: 'decode', id, hash, width, … })</text>
+
+  <rect class="uibox" x="120" y="140" width="290" height="110" rx="12"/>
+  <text class="uilabel" x="265" y="186" font-size="16" text-anchor="middle">UI 스레드</text>
+  <text class="soft" x="265" y="212" font-size="12.5" text-anchor="middle">Compose가 화면을 그리는 곳</text>
+  <text class="soft" x="265" y="232" font-size="12.5" text-anchor="middle">자기 메모리</text>
+
+  <rect class="wkbox" x="590" y="140" width="290" height="110" rx="12"/>
+  <text class="wklabel" x="735" y="186" font-size="16" text-anchor="middle">Web Worker</text>
+  <text class="soft" x="735" y="212" font-size="12.5" text-anchor="middle">흐림 계산을 따로 도는 곳</text>
+  <text class="soft" x="735" y="232" font-size="12.5" text-anchor="middle">자기 메모리</text>
+
+  <text class="soft" x="500" y="190" font-size="12.5" text-anchor="middle">같이 쓰는</text>
+  <text class="soft" x="500" y="210" font-size="12.5" text-anchor="middle">메모리가 없다</text>
+
+  <path class="msg" d="M720 250 Q500 360 280 250" marker-end="url(#arrow)"/>
+  <text class="mono msglabel" x="500" y="350" font-size="12.5" text-anchor="middle">postMessage({ kind: 'result', id, buffer }, [buffer])</text>
+  <text class="title msglabel" x="500" y="374" font-size="13" text-anchor="middle">결과 돌려받기</text>
+</svg>
