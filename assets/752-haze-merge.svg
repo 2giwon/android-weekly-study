@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 520" role="img" aria-labelledby="t d">
+  <title id="t">Glass 컨테이너의 합치기 규칙</title>
+  <desc id="d">같은 컨테이너 안의 유리 두 개 사이 간격에 따라 세 단계로 보인다. 간격이 mergeDistance 이상이면 따로 그려진다. 간격이 mergeDistance보다 작고 그 절반 이상이면 같은 덩어리로 묶이고 마주 보는 가장자리가 서로를 향해 늘어난다. 간격이 절반보다 작으면 둘 사이에 다리가 생겨 한 모양이 된다.</desc>
+  <style>
+    text { font-family: 'IBM Plex Sans KR', 'Apple SD Gothic Neo', system-ui, sans-serif; fill: #1b2733; }
+    .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+    .soft { fill: #4a5866; }
+    .title { font-weight: 700; }
+    .band { fill: #f3f5f7; }
+    .glass { fill: #dce9f7; stroke: #3b6ea8; stroke-width: 2; }
+    .gap { stroke: #b5852a; stroke-width: 1.6; fill: none; }
+    .gaplabel { fill: #8a6216; }
+    .ok { fill: #2e7d6b; font-weight: 700; }
+    .sep { stroke: #c9d0d6; stroke-width: 1; }
+    @media (prefers-color-scheme: dark) {
+      text { fill: #e4e9ee; }
+      .soft { fill: #9fadba; }
+      .band { fill: #161d24; }
+      .glass { fill: #1b2c40; stroke: #7fb0e6; }
+      .gap { stroke: #e0b860; }
+      .gaplabel { fill: #e0b860; }
+      .ok { fill: #6cc4ad; }
+      .sep { stroke: #2c3640; }
+    }
+  </style>
+
+  <rect class="band" x="10" y="14" width="980" height="492" rx="10"/>
+  <text class="title" x="30" y="46" font-size="15">hazeGlassContainer(mergeDistance = 16.dp) 안의 유리 두 개</text>
+  <text class="soft" x="30" y="70" font-size="12.5">둘 사이 간격만 바꿨다. 모양, 재질, 입력은 같다고 가정한다.</text>
+
+  <!-- 1단계: 따로 -->
+  <text class="title" x="30" y="128" font-size="13.5">간격이 16dp 이상</text>
+  <text class="soft" x="30" y="150" font-size="12.5">합쳐지지 않는다</text>
+  <rect class="glass" x="400" y="100" width="90" height="56" rx="28"/>
+  <rect class="glass" x="560" y="100" width="90" height="56" rx="28"/>
+  <path class="gap" d="M490 172 H560 M490 166 V178 M560 166 V178"/>
+  <text class="mono gaplabel" x="525" y="196" font-size="12" text-anchor="middle">gap ≥ 16dp</text>
+  <text class="ok" x="960" y="134" font-size="12.5" text-anchor="end">따로 그린다</text>
+
+  <line class="sep" x1="30" y1="214" x2="970" y2="214"/>
+
+  <!-- 2단계: 늘어남 -->
+  <text class="title" x="30" y="268" font-size="13.5">간격이 8dp 이상, 16dp 미만</text>
+  <text class="soft" x="30" y="290" font-size="12.5">한 덩어리로 묶이고 마주 보는 쪽이 늘어난다</text>
+  <path class="glass" d="M428 240 H490 Q512 240 514 268 Q512 296 490 296 H428 A28 28 0 0 1 428 240 Z"/>
+  <path class="glass" d="M600 240 H562 Q540 240 538 268 Q540 296 562 296 H600 A28 28 0 0 0 600 240 Z"/>
+  <path class="gap" d="M514 312 H538 M514 306 V318 M538 306 V318"/>
+  <text class="mono gaplabel" x="526" y="336" font-size="12" text-anchor="middle">8dp ≤ gap &lt; 16dp</text>
+  <text class="ok" x="960" y="274" font-size="12.5" text-anchor="end">가장자리가 서로를 향해 늘어난다</text>
+
+  <line class="sep" x1="30" y1="354" x2="970" y2="354"/>
+
+  <!-- 3단계: 다리 -->
+  <text class="title" x="30" y="408" font-size="13.5">간격이 8dp 미만</text>
+  <text class="soft" x="30" y="430" font-size="12.5">둘 사이에 다리가 생겨 한 모양이 된다</text>
+  <path class="glass" d="M440 380 H500 Q520 392 540 380 H600 A28 28 0 0 1 600 436 H540 Q520 424 500 436 H440 A28 28 0 0 1 440 380 Z"/>
+  <path class="gap" d="M512 452 H528 M512 446 V458 M528 446 V458"/>
+  <text class="mono gaplabel" x="520" y="476" font-size="12" text-anchor="middle">gap &lt; 8dp</text>
+  <text class="ok" x="960" y="414" font-size="12.5" text-anchor="end">한 표면으로 그린다</text>
+
+  <text class="soft" x="30" y="496" font-size="12">Haze 문서의 합치기 규칙(Merge rule)을 바탕으로 직접 그림. 한 덩어리에는 최대 4개까지 들어간다.</text>
+</svg>

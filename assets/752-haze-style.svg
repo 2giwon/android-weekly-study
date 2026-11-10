@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 440" role="img" aria-labelledby="t d">
+  <title id="t">애니메이션 값을 스타일 블록 안에서 읽을 때</title>
+  <desc id="d">위 줄은 스타일을 매번 새로 만드는 방식이다. 애니메이션 값이 바뀔 때마다 화면 함수가 다시 실행되고, 새 스타일이 만들어지고, hazeGlass 호출부가 다시 실행된 뒤 효과가 바뀐다. 아래 줄은 Haze 2.1 방식이다. 스타일은 한 번만 만들고, 애니메이션 값은 스타일 블록 안에서 읽는다. 값이 바뀌면 Haze가 그 읽기를 지켜보고 있다가 다음 프레임에 효과만 바꾼다. 화면 함수와 hazeGlass 호출부는 다시 실행되지 않는다.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" class="head"/>
+    </marker>
+  </defs>
+  <style>
+    text { font-family: 'IBM Plex Sans KR', 'Apple SD Gothic Neo', system-ui, sans-serif; fill: #1b2733; }
+    .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+    .soft { fill: #4a5866; }
+    .title { font-weight: 700; }
+    .band { fill: #f3f5f7; }
+    .box { fill: #ffffff; stroke: #8a949e; stroke-width: 1.5; }
+    .hot { fill: #fbe9e7; stroke: #b4473a; stroke-width: 1.8; }
+    .cool { fill: #e1f2ec; stroke: #2e7d6b; stroke-width: 1.8; }
+    .line { stroke: #8a949e; stroke-width: 1.6; fill: none; }
+    .head { fill: #8a949e; }
+    .bad { fill: #b4473a; font-weight: 700; }
+    .ok { fill: #2e7d6b; font-weight: 700; }
+    @media (prefers-color-scheme: dark) {
+      text { fill: #e4e9ee; }
+      .soft { fill: #9fadba; }
+      .band { fill: #161d24; }
+      .box { fill: #1d252d; stroke: #75808b; }
+      .hot { fill: #3a1d1a; stroke: #e58a7d; }
+      .cool { fill: #15302a; stroke: #6cc4ad; }
+      .line { stroke: #75808b; }
+      .head { fill: #75808b; }
+      .bad { fill: #e58a7d; }
+      .ok { fill: #6cc4ad; }
+    }
+  </style>
+
+  <rect class="band" x="10" y="14" width="980" height="196" rx="10"/>
+  <text class="title" x="30" y="46" font-size="15">스타일을 매번 새로 만들 때</text>
+  <rect class="box" x="30" y="78" width="160" height="60" rx="8"/>
+  <text x="110" y="104" font-size="13" text-anchor="middle">애니메이션 값</text>
+  <text class="mono soft" x="110" y="124" font-size="11.5" text-anchor="middle">radius 28→20dp</text>
+  <rect class="hot" x="240" y="78" width="200" height="60" rx="8"/>
+  <text x="340" y="104" font-size="13" text-anchor="middle">화면 함수 다시 실행</text>
+  <text class="soft" x="340" y="124" font-size="11.5" text-anchor="middle">(리컴포지션)</text>
+  <rect class="hot" x="490" y="78" width="200" height="60" rx="8"/>
+  <text x="590" y="104" font-size="13" text-anchor="middle">새 스타일 만들기</text>
+  <text class="mono soft" x="590" y="124" font-size="11.5" text-anchor="middle">hazeGlass 호출부도 다시</text>
+  <rect class="box" x="740" y="78" width="200" height="60" rx="8"/>
+  <text x="840" y="112" font-size="13" text-anchor="middle">효과가 바뀐다</text>
+  <path class="line" d="M190 108 H236" marker-end="url(#arrow)"/>
+  <path class="line" d="M440 108 H486" marker-end="url(#arrow)"/>
+  <path class="line" d="M690 108 H736" marker-end="url(#arrow)"/>
+  <text class="bad" x="30" y="180" font-size="12.5">애니메이션이 도는 동안 매 프레임 이 줄 전체가 반복된다.</text>
+
+  <rect class="band" x="10" y="228" width="980" height="196" rx="10"/>
+  <text class="title" x="30" y="260" font-size="15">Haze 2.1: 스타일은 한 번, 값은 블록 안에서 읽기</text>
+  <rect class="box" x="30" y="292" width="160" height="60" rx="8"/>
+  <text x="110" y="318" font-size="13" text-anchor="middle">애니메이션 값</text>
+  <text class="mono soft" x="110" y="338" font-size="11.5" text-anchor="middle">radius 28→20dp</text>
+  <rect class="cool" x="240" y="292" width="450" height="60" rx="8"/>
+  <text x="465" y="318" font-size="13" text-anchor="middle">Haze가 스타일 블록 안의 읽기를 지켜본다</text>
+  <text class="mono soft" x="465" y="338" font-size="11.5" text-anchor="middle">then { shape(RoundedCornerShape(radius.value)) }</text>
+  <rect class="box" x="740" y="292" width="200" height="60" rx="8"/>
+  <text x="840" y="318" font-size="13" text-anchor="middle">다음 프레임에</text>
+  <text x="840" y="338" font-size="13" text-anchor="middle">효과만 바뀐다</text>
+  <path class="line" d="M190 322 H236" marker-end="url(#arrow)"/>
+  <path class="line" d="M690 322 H736" marker-end="url(#arrow)"/>
+  <text class="ok" x="30" y="394" font-size="12.5">화면 함수와 hazeGlass 호출부는 다시 실행되지 않는다. 스타일 객체도 그대로다.</text>
+</svg>
