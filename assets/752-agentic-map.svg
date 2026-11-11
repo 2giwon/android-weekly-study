@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 560" role="img" aria-labelledby="t d">
+  <title id="t">Android Dev Summit 2026에서 소개된 에이전트 도구를 개발 단계별로 묶은 지도</title>
+  <desc id="d">네 줄로 나뉜다. 첫 줄은 코드를 짤 때 쓰는 도구로, Android Studio 안에서 고르는 에이전트, Claude Code와 Codex와 Antigravity용 공식 플러그인, Android 스킬이다. 둘째 줄은 앱을 돌려 볼 때 쓰는 도구로, Android CLI, Android Device Streaming, 프로파일러 명령이다. 셋째 줄은 시험할 때 쓰는 Journeys다. 넷째 줄은 개발자가 아니라 앱 사용자에게 닿는 기능으로, AppFunctions와 A2UI Compose다. 위 세 줄은 개발자의 에이전트를 돕고, 넷째 줄은 사용자의 에이전트를 돕는다.</desc>
+  <style>
+    text { font-family: 'IBM Plex Sans KR', 'Apple SD Gothic Neo', system-ui, sans-serif; fill: #1b2733; }
+    .soft { fill: #4a5866; }
+    .title { font-weight: 700; }
+    .band { fill: #f3f5f7; }
+    .dev { fill: #e7eef8; stroke: #3b6ea8; stroke-width: 1.6; }
+    .user { fill: #e1f2ec; stroke: #2e7d6b; stroke-width: 1.6; }
+    .tagdev { fill: #3b6ea8; font-weight: 700; }
+    .taguser { fill: #2e7d6b; font-weight: 700; }
+    .sep { stroke: #b9c2ca; stroke-width: 1.2; stroke-dasharray: 6 5; }
+    @media (prefers-color-scheme: dark) {
+      text { fill: #e4e9ee; }
+      .soft { fill: #9fadba; }
+      .band { fill: #161d24; }
+      .dev { fill: #1b2c40; stroke: #7fb0e6; }
+      .user { fill: #15302a; stroke: #6cc4ad; }
+      .tagdev { fill: #7fb0e6; }
+      .taguser { fill: #6cc4ad; }
+      .sep { stroke: #3a4652; }
+    }
+  </style>
+
+  <rect class="band" x="10" y="14" width="980" height="532" rx="10"/>
+  <text class="tagdev" x="30" y="46" font-size="13">개발자의 에이전트를 돕는 도구</text>
+
+  <!-- 1줄: 코드를 짤 때 -->
+  <text class="title" x="30" y="96" font-size="14">코드를 짤 때</text>
+  <text class="soft" x="30" y="116" font-size="12">에이전트를 고르고 지식을 준다</text>
+  <rect class="dev" x="220" y="70" width="240" height="62" rx="8"/>
+  <text x="340" y="96" font-size="13" text-anchor="middle">Studio 안에서 에이전트 고르기</text>
+  <text class="soft" x="340" y="116" font-size="11.5" text-anchor="middle">Rabbit 2부터, ACP 지원 에이전트</text>
+  <rect class="dev" x="480" y="70" width="240" height="62" rx="8"/>
+  <text x="600" y="96" font-size="13" text-anchor="middle">공식 Android 플러그인</text>
+  <text class="soft" x="600" y="116" font-size="11.5" text-anchor="middle">Claude Code, Codex, Antigravity</text>
+  <rect class="dev" x="740" y="70" width="230" height="62" rx="8"/>
+  <text x="855" y="96" font-size="13" text-anchor="middle">Android 스킬</text>
+  <text class="soft" x="855" y="116" font-size="11.5" text-anchor="middle">20개 넘는 분야의 권장 방식</text>
+
+  <!-- 2줄: 앱을 돌려 볼 때 -->
+  <text class="title" x="30" y="186" font-size="14">앱을 돌려 볼 때</text>
+  <text class="soft" x="30" y="206" font-size="12">에이전트가 기기를 만진다</text>
+  <rect class="dev" x="220" y="160" width="240" height="62" rx="8"/>
+  <text x="340" y="186" font-size="13" text-anchor="middle">Android CLI</text>
+  <text class="soft" x="340" y="206" font-size="11.5" text-anchor="middle">에뮬레이터 실행과 조작</text>
+  <rect class="dev" x="480" y="160" width="240" height="62" rx="8"/>
+  <text x="600" y="186" font-size="13" text-anchor="middle">Android Device Streaming</text>
+  <text class="soft" x="600" y="206" font-size="11.5" text-anchor="middle">Firebase의 원격 실기기</text>
+  <rect class="dev" x="740" y="160" width="230" height="62" rx="8"/>
+  <text x="855" y="186" font-size="13" text-anchor="middle">프로파일러 명령</text>
+  <text class="soft" x="855" y="206" font-size="11.5" text-anchor="middle">성능 측정을 CLI에서</text>
+
+  <!-- 3줄: 시험할 때 -->
+  <text class="title" x="30" y="276" font-size="14">시험할 때</text>
+  <text class="soft" x="30" y="296" font-size="12">자연어로 쓴 시험을 AI가 돈다</text>
+  <rect class="dev" x="220" y="250" width="500" height="62" rx="8"/>
+  <text x="470" y="276" font-size="13" text-anchor="middle">Journeys</text>
+  <text class="soft" x="470" y="296" font-size="11.5" text-anchor="middle">XML 파일에 적은 단계와 확인 문장을 AI가 화면을 보며 수행</text>
+
+  <line class="sep" x1="30" y1="346" x2="970" y2="346"/>
+  <text class="taguser" x="30" y="380" font-size="13">앱 사용자의 에이전트를 돕는 기능</text>
+
+  <!-- 4줄: 앱 안에서 -->
+  <text class="title" x="30" y="430" font-size="14">사용자의 앱 안에서</text>
+  <text class="soft" x="30" y="450" font-size="12">앱이 AI와 이어진다</text>
+  <rect class="user" x="220" y="404" width="370" height="62" rx="8"/>
+  <text x="405" y="430" font-size="13" text-anchor="middle">AppFunctions (Beta)</text>
+  <text class="soft" x="405" y="450" font-size="11.5" text-anchor="middle">기기 안의 AI가 앱 기능을 부른다</text>
+  <rect class="user" x="600" y="404" width="370" height="62" rx="8"/>
+  <text x="785" y="430" font-size="13" text-anchor="middle">A2UI Compose (alpha)</text>
+  <text class="soft" x="785" y="450" font-size="11.5" text-anchor="middle">AI가 보낸 JSON을 네이티브 화면으로</text>
+
+  <text class="soft" x="30" y="516" font-size="12">원문이 소개한 도구를 직접 묶어 그림. 괄호 안은 2026-11 기준 상태다.</text>
+</svg>
